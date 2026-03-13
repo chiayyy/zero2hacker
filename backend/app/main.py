@@ -9,14 +9,12 @@ from pathlib import Path
 
 from app.core.config import settings
 from app.api.v1.router import api_router
-from app.core.firebase import initialize_firebase
 from app.core.database import init_db
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
-    initialize_firebase()
     await init_db()
     yield
     # Shutdown
