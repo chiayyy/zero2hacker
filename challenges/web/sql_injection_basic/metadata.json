@@ -1,0 +1,38 @@
+{
+  "title": "Basic SQL Injection",
+  "description": "This web application has a vulnerable login form. Find a way to bypass authentication and login as admin to retrieve the flag.",
+  "short_description": "Classic SQL injection vulnerability",
+  "category": "web-security",
+  "difficulty": "easy",
+  "points": 50,
+  "estimated_time": 30,
+  "flag": "flag{sql_injection_basics}",
+  "hints": [
+    "Try common SQL injection payloads in the login form",
+    "Look for ways to make the SQL query always return true",
+    "The admin user has special privileges",
+    "Try: admin' OR '1'='1'-- as username"
+  ],
+  "tags": ["sql", "injection", "authentication", "bypass"],
+  "learning_objectives": [
+    "Understand SQL injection vulnerabilities",
+    "Learn about authentication bypass techniques",
+    "Practice identifying vulnerable SQL queries",
+    "Understand the importance of parameterized queries"
+  ],
+  "docker_image": "python:3.9-slim",
+  "docker_port": 8080,
+  "container_config": {
+    "build_commands": [
+      "pip install flask",
+      "python app.py"
+    ],
+    "expose_port": 8080
+  },
+  "files": [
+    "app.py",
+    "requirements.txt"
+  ],
+  "solution": "Use SQL injection payload like 'admin' OR '1'='1'--' in the username field to bypass authentication",
+  "writeup": "SQL injection occurs when user input is directly concatenated into SQL queries without proper sanitization. In this case, the application constructs the query using string formatting, allowing attackers to manipulate the SQL logic. The payload 'admin' OR '1'='1'--' breaks out of the string context and adds a condition that always evaluates to true, effectively bypassing the password check."
+}

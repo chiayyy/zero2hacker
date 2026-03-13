@@ -1,0 +1,21 @@
+CLASSIFIED DOCUMENT
+===================
+Document ID: CTF-2024-008
+Classification: SECRET
+Encoding: Standard Agency Protocol
+
+Agent Report - Mission Debrief
+------------------------------
+
+The operation was successful. All objectives completed.
+The extracted intelligence has been encoded using our
+standard rotation protocol for transmission security.
+
+ENCODED INTELLIGENCE:
+SYNT{ebgngvba_pvcure_fbyirq}
+
+Remember: Our standard protocol uses alphabetic rotation.
+The key is the same as the position in the alphabet of
+the letter 'N' minus one... or just the number 13.
+
+END OF DOCUMENT

@@ -1,0 +1,397 @@
+{% extends "base.html" %}
+
+{% block title %}{{ challenge.title }} - Zero2Hacker CTF{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>
+                    {{ challenge.title }}
+                    <span class="badge bg-{{ 'success' if challenge.difficulty == 'beginner' else 'primary' if challenge.difficulty == 'easy' else 'warning' if challenge.difficulty == 'medium' else 'danger' }}">
+                        {{ challenge.difficulty.title() }}
+                    </span>
+                    {% if solved %}
+                    <span class="badge bg-success"><i class="fas fa-check"></i> Solved</span>
+                    {% endif %}
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>Category:</strong> {{ challenge.category.title() }} |
+                    <strong>Points:</strong> {{ challenge.points }} |
+                    <strong>Difficulty:</strong> {{ challenge.difficulty.title() }}
+                </div>
+
+                <!-- Challenge Description -->
+                <div class="alert alert-info">
+                    {{ challenge.description | safe }}
+                </div>
+
+                <!-- Special Download Box for challenges with files -->
+                {% if challenge.has_download %}
+                <div class="card mt-3 mb-3" style="border: 2px solid var(--primary-cyan); background: rgba(34, 211, 238, 0.1);">
+                    <div class="card-header" style="background: rgba(34, 211, 238, 0.2);">
+                        <h5><i class="fas fa-download"></i> Required Download</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>This challenge requires you to download and analyze a file.</strong></p>
+                        <div class="d-grid">
+                            <a href="{{ challenge.download_file }}" download class="btn btn-primary btn-lg">
+                                <i class="fas fa-download"></i> Download Challenge File
+                            </a>
+                        </div>
+                        <small class="text-muted mt-2 d-block">
+                            💡 After downloading, use the recommended tools or online analyzers mentioned in the challenge description.
+                        </small>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Special handling for Page Source challenge -->
+                {% if challenge.title == 'Page Source Hunt' %}
+                <!-- Hidden flag in HTML comment -->
+                <!-- flag{view_source_master} -->
+                <div class="alert alert-warning">
+                    <strong>Hint:</strong> The flag is hidden in the HTML source code of this page. Right-click and select "View Page Source" or press Ctrl+U to find it!
+                </div>
+                {% endif %}
+
+                <!-- Flag Submission Form -->
+                <div class="card mt-4" style="border: 2px solid var(--primary-purple);">
+                    <div class="card-header" style="background: rgba(168, 85, 247, 0.1);">
+                        <h5><i class="fas fa-flag"></i> Submit Flag</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="flagForm">
+                            <input type="hidden" name="challenge_id" value="{{ challenge.id }}">
+                            <div class="input-group">
+                                <input type="text" class="form-control flag-input" name="flag"
+                                       placeholder="Enter flag (e.g., flag{example})"
+                                       {% if solved %}disabled{% endif %} required>
+                                <button type="submit" class="btn btn-primary"
+                                        {% if solved %}disabled{% endif %}>
+                                    <i class="fas fa-paper-plane"></i> Submit Flag
+                                </button>
+                            </div>
+                        </form>
+                        <div id="result" class="mt-3"></div>
+                        {% if solved %}
+                        <div class="alert alert-success mt-3">
+                            <i class="fas fa-trophy"></i> <strong>Challenge Completed!</strong> You have successfully solved this challenge.
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Previous Attempts -->
+        {% if attempts %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5><i class="fas fa-history"></i> Your Attempts (Last 5)</h5>
+            </div>
+            <div class="card-body">
+                {% for attempt in attempts[:5] %}
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                    <div>
+                        <code class="text-break">{{ attempt.flag_submitted }}</code>
+                        <br>
+                        <small class="text-muted">{{ attempt.created_at }}</small>
+                    </div>
+                    <span class="badge bg-{{ 'success' if attempt.is_correct else 'danger' }}">
+                        {% if attempt.is_correct %}
+                            <i class="fas fa-check"></i> Correct (+{{ attempt.points_earned }} pts)
+                        {% else %}
+                            <i class="fas fa-times"></i> Incorrect
+                        {% endif %}
+                    </span>
+                </div>
+                {% endfor %}
+                {% if attempts|length > 5 %}
+                <p class="text-muted"><small>... and {{ attempts|length - 5 }} more attempts</small></p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-md-4">
+        <!-- Need Help Section -->
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-lightbulb"></i> Need Help?</h5>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-outline-warning btn-sm mb-3" onclick="getHint()">
+                    <i class="fas fa-question-circle"></i> Get Hint (-5 points)
+                </button>
+                <div id="hint-container"></div>
+
+                <hr>
+
+                <h6><i class="fas fa-robot"></i> Ask Kelnes AI</h6>
+                <p class="small text-muted">Get help from our AI assistant!</p>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-info btn-sm" onclick="askKelnes('help')">
+                        <i class="fas fa-question"></i> General Help
+                    </button>
+                    <button class="btn btn-outline-info btn-sm" onclick="askKelnes('{{ challenge.category }}')">
+                        <i class="fas fa-info-circle"></i> About {{ challenge.category.title() }}
+                    </button>
+                    <button class="btn btn-outline-info btn-sm" onclick="askKelnes('tools')">
+                        <i class="fas fa-wrench"></i> Recommended Tools
+                    </button>
+                </div>
+                <div id="ai-response" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- Challenge Info -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle"></i> Challenge Info</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Points:</strong> {{ challenge.points }}</p>
+                <p><strong>Category:</strong> {{ challenge.category.title() }}</p>
+                <p><strong>Difficulty:</strong> {{ challenge.difficulty.title() }}</p>
+                <p><strong>Your Attempts:</strong> {{ attempts|length }}</p>
+                {% if challenge.has_download %}
+                <p><strong>Requires Download:</strong> Yes <i class="fas fa-download text-primary"></i></p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="/challenges" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left"></i> Back to Challenges
+                    </a>
+                    {% if challenge.id > 1 %}
+                    <a href="/challenge/{{ challenge.id - 1 }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-chevron-left"></i> Previous Challenge
+                    </a>
+                    {% endif %}
+                    {% if challenge.id < 10 %}
+                    <a href="/challenge/{{ challenge.id + 1 }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-chevron-right"></i> Next Challenge
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.download-box {
+    border: 2px dashed var(--primary-cyan);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    background: rgba(34, 211, 238, 0.05);
+    transition: all 0.3s ease;
+}
+
+.download-box:hover {
+    border-style: solid;
+    background: rgba(34, 211, 238, 0.1);
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+}
+
+.flag-input {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+#result {
+    min-height: 0;
+    transition: all 0.3s ease;
+}
+
+/* Confetti animation keyframes */
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+</style>
+
+<script>
+// Flag submission with enhanced feedback
+$('#flagForm').submit(function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    fetch('/submit_flag', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        let alertClass = data.success ? 'alert-success' : 'alert-danger';
+        let icon = data.success ? 'fas fa-check-circle' : 'fas fa-times-circle';
+        let bgColor = data.success ? '#22c55e' : '#ef4444';
+
+        // Create animated result
+        const resultDiv = $(`
+            <div class="alert ${alertClass}" style="animation: slideInDown 0.5s ease-out; transform: scale(0); opacity: 0;">
+                <i class="${icon}" style="font-size: 1.5em; margin-right: 10px;"></i>
+                <strong>${data.message}</strong>
+                ${data.points_earned ? `<br><div style="margin-top: 8px; font-size: 1.2em;"><i class="fas fa-star text-warning"></i> <strong>+${data.points_earned} Points Earned!</strong></div>` : ''}
+            </div>
+        `);
+
+        $('#result').html(resultDiv);
+
+        // Animate the result in
+        setTimeout(() => {
+            resultDiv.css({
+                'transform': 'scale(1)',
+                'opacity': '1',
+                'transition': 'all 0.3s ease-out'
+            });
+        }, 100);
+
+        if (data.success) {
+            // Success effects - Confetti!
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = $('<div>')
+                        .css({
+                            'position': 'fixed',
+                            'top': '-10px',
+                            'left': Math.random() * window.innerWidth + 'px',
+                            'width': '10px',
+                            'height': '10px',
+                            'background': ['#22c55e', '#fbbf24', '#3b82f6', '#f59e0b'][Math.floor(Math.random() * 4)],
+                            'z-index': '9999',
+                            'border-radius': '50%',
+                            'animation': 'confetti-fall 3s linear forwards'
+                        });
+
+                    $('body').append(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 20);
+            }
+
+            // Disable form and show success message
+            $('#flagForm input, #flagForm button').prop('disabled', true);
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
+        } else {
+            // Error effects - shake animation
+            $('#flagForm').css('animation', 'shake 0.5s ease-in-out');
+            setTimeout(() => {
+                $('#flagForm').css('animation', '');
+            }, 500);
+        }
+    })
+    .catch(error => {
+        $('#result').html(`
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle"></i> Error submitting flag: ${error}
+            </div>
+        `);
+    });
+});
+
+// Enhanced hint system
+function getHint() {
+    fetch('/get_hint/{{ challenge.id }}')
+    .then(response => response.json())
+    .then(data => {
+        if (data.hint) {
+            const hintHtml = `
+                <div class="alert alert-warning">
+                    <i class="fas fa-lightbulb"></i> <strong>Hint:</strong> ${data.hint}
+                    ${data.points_deducted ? `<br><small class="text-muted">📉 ${data.points_deducted} points will be deducted from your final score for this challenge.</small>` : ''}
+                </div>
+            `;
+            $('#hint-container').html(hintHtml);
+        } else {
+            $('#hint-container').html(`
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> ${data.hint || 'No more hints available for this challenge.'}
+                </div>
+            `);
+        }
+    })
+    .catch(error => {
+        console.error('Error getting hint:', error);
+    });
+}
+
+// Kelnes AI Assistant
+function askKelnes(topic) {
+    const messages = {
+        'help': 'I need help with this challenge. Can you give me some general guidance?',
+        'crypto': 'Can you help me understand cryptography challenges?',
+        'web': 'Can you explain web security concepts?',
+        'steganography': 'How do steganography challenges work?',
+        'network': 'What should I know about network analysis?',
+        'reverse': 'How do I approach reverse engineering?',
+        'misc': 'Can you help with miscellaneous challenges?',
+        'intro': 'Can you give me some beginner tips?',
+        'tools': 'What tools should I use for CTF challenges?'
+    };
+
+    const message = messages[topic] || 'Can you help me with this challenge?';
+
+    $('#ai-response').html('<div class="spinner-border spinner-border-sm text-primary"></div> Kelnes is thinking...');
+
+    fetch('/api/kelnes/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            message: message
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            $('#ai-response').html(`
+                <div class="alert alert-primary">
+                    <i class="fas fa-robot"></i> <strong>Kelnes:</strong><br>
+                    ${data.response}
+                </div>
+            `);
+        } else {
+            $('#ai-response').html(`
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i> Kelnes is currently unavailable. Please try again later.
+                </div>
+            `);
+        }
+    })
+    .catch(error => {
+        $('#ai-response').html(`
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle"></i> Error connecting to Kelnes AI.
+            </div>
+        `);
+    });
+}
+</script>
+{% endblock %}

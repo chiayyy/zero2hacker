@@ -1,0 +1,336 @@
+{% extends "base.html" %}
+
+{% block title %}Downloads - Zero2Hacker{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="text-white mb-4">
+            <i class="fas fa-download"></i> Challenge Downloads
+        </h2>
+        <p class="text-light">Download files required for specific challenges. These files contain hidden data, metadata, or require special analysis tools.</p>
+    </div>
+</div>
+
+<!-- Forensics & Image Analysis -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-search"></i> Forensics & Image Analysis</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="download-item">
+                            <h6><i class="fas fa-image"></i> Secret Image</h6>
+                            <p class="text-muted">Image file with hidden EXIF metadata</p>
+                            <small><strong>Challenge:</strong> Image Metadata Analysis</small><br>
+                            <small><strong>Category:</strong> Forensics | <strong>Difficulty:</strong> Medium</small>
+                            <div class="mt-2">
+                                <a href="/static/downloads/secret_image.jpg" download="secret_image.jpg" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-download"></i> Download JPG (2.1 MB)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="download-item">
+                            <h6><i class="fas fa-network-wired"></i> Network Capture</h6>
+                            <p class="text-muted">PCAP file with captured network traffic</p>
+                            <small><strong>Challenge:</strong> Network Packet Analysis</small><br>
+                            <small><strong>Category:</strong> Network | <strong>Difficulty:</strong> Expert</small>
+                            <div class="mt-2">
+                                <a href="/static/downloads/network_capture.pcap" download="capture.pcap" class="btn btn-info btn-sm">
+                                    <i class="fas fa-download"></i> Download PCAP (1.8 MB)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="download-item">
+                            <h6><i class="fas fa-qrcode"></i> QR Code Challenge</h6>
+                            <p class="text-muted">QR code image containing hidden flag</p>
+                            <small><strong>Challenge:</strong> QR Code Challenge</small><br>
+                            <small><strong>Category:</strong> Misc | <strong>Difficulty:</strong> Easy</small>
+                            <div class="mt-2">
+                                <a href="/static/downloads/qr_challenge.png" download="qr_challenge.png" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-download"></i> Download QR (400x450)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="download-item">
+                            <h6><i class="fas fa-file-code"></i> Binary Analysis</h6>
+                            <p class="text-muted">Binary dump with assembly code analysis</p>
+                            <small><strong>Challenge:</strong> Binary Stack Analysis</small><br>
+                            <small><strong>Category:</strong> PWN | <strong>Difficulty:</strong> Expert</small>
+                            <div class="mt-2">
+                                <a href="/static/downloads/binary_analysis.txt" download="binary_dump.txt" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-download"></i> Download Binary (3 KB)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Steganography -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-eye-slash"></i> Steganography</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="download-item">
+                            <h6><i class="fas fa-image"></i> Hidden Message Image</h6>
+                            <p class="text-muted">PNG image with LSB steganography</p>
+                            <small><strong>Challenge:</strong> Steganography Photo Challenge</small><br>
+                            <small><strong>Category:</strong> Steganography | <strong>Difficulty:</strong> Hard</small>
+                            <div class="mt-2">
+                                <a href="/static/downloads/steganography_image.png" download="hidden_message.png" class="btn btn-success btn-sm">
+                                    <i class="fas fa-download"></i> Download PNG (3.2 MB)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="download-item">
+                            <h6><i class="fas fa-music"></i> Audio File</h6>
+                            <p class="text-muted">WAV audio with hidden steganographic data</p>
+                            <small><strong>Challenge:</strong> Audio Steganography</small><br>
+                            <small><strong>Category:</strong> Steganography | <strong>Difficulty:</strong> Hard</small>
+                            <div class="mt-2">
+                                <a href="/static/downloads/hidden_audio.wav" download="secret_audio.wav" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-download"></i> Download WAV (4.5 MB)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- OSINT -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-search-location"></i> OSINT (Open Source Intelligence)</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="download-item">
+                            <h6><i class="fas fa-share-alt"></i> Social Media Evidence</h6>
+                            <p class="text-muted">Social media post with hidden encoded data</p>
+                            <small><strong>Challenge:</strong> Social Media Hunt</small><br>
+                            <small><strong>Category:</strong> OSINT | <strong>Difficulty:</strong> Easy</small>
+                            <div class="mt-2">
+                                <a href="/static/downloads/social_media_post.txt" download="social_media_evidence.txt" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-download"></i> Download TXT (2 KB)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="download-item">
+                            <h6><i class="fas fa-wifi"></i> Network Configuration</h6>
+                            <p class="text-muted">WiFi and network configuration file</p>
+                            <small><strong>Challenge:</strong> Network Credentials Hunt</small><br>
+                            <small><strong>Category:</strong> Network | <strong>Difficulty:</strong> Medium</small>
+                            <div class="mt-2">
+                                <a href="/static/downloads/network_config.txt" download="network_config.txt" class="btn btn-info btn-sm">
+                                    <i class="fas fa-download"></i> Download Config (2 KB)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Essential CTF Tools -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-toolbox"></i> Essential CTF Tools - Direct Downloads</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="download-item tool-download">
+                            <h6><i class="fas fa-network-wired"></i> Wireshark</h6>
+                            <p class="text-muted">Network protocol analyzer</p>
+                            <small><strong>Size:</strong> ~50MB | <strong>OS:</strong> Windows</small>
+                            <div class="mt-2">
+                                <a href="https://www.wireshark.org/download.html" target="_blank" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-download"></i> Download Wireshark
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="download-item tool-download">
+                            <h6><i class="fas fa-cube"></i> VirtualBox</h6>
+                            <p class="text-muted">Virtual machine platform</p>
+                            <small><strong>Size:</strong> ~120MB | <strong>OS:</strong> Windows</small>
+                            <div class="mt-2">
+                                <a href="https://www.virtualbox.org/wiki/Downloads" target="_blank" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-download"></i> Download VirtualBox
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="download-item tool-download">
+                            <h6><i class="fas fa-music"></i> Audacity</h6>
+                            <p class="text-muted">Audio analysis & editing</p>
+                            <small><strong>Size:</strong> ~30MB | <strong>OS:</strong> Windows</small>
+                            <div class="mt-2">
+                                <a href="https://www.audacityteam.org/download/" target="_blank" class="btn btn-success btn-sm">
+                                    <i class="fas fa-download"></i> Download Audacity
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="download-item tool-download">
+                            <h6><i class="fas fa-terminal"></i> Kali Linux VM</h6>
+                            <p class="text-muted">Pre-built CTF environment</p>
+                            <small><strong>Size:</strong> ~3GB | <strong>Format:</strong> OVA</small>
+                            <div class="mt-2">
+                                <a href="https://www.kali.org/get-kali/#kali-virtual-machines" target="_blank" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-download"></i> Download Kali VM
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="download-item tool-download">
+                            <h6><i class="fas fa-search"></i> HxD Hex Editor</h6>
+                            <p class="text-muted">Binary file analysis</p>
+                            <small><strong>Size:</strong> ~3MB | <strong>OS:</strong> Windows</small>
+                            <div class="mt-2">
+                                <a href="https://mh-nexus.de/en/downloads.php?product=HxD20" target="_blank" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-download"></i> Download HxD
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="download-item tool-download">
+                            <h6><i class="fas fa-lock"></i> John the Ripper</h6>
+                            <p class="text-muted">Password cracking tool</p>
+                            <small><strong>Size:</strong> ~15MB | <strong>OS:</strong> Windows</small>
+                            <div class="mt-2">
+                                <a href="https://www.openwall.com/john/" target="_blank" class="btn btn-dark btn-sm">
+                                    <i class="fas fa-download"></i> Download John
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="download-item tool-download">
+                            <h6><i class="fas fa-eye-slash"></i> Steghide</h6>
+                            <p class="text-muted">Steganography tool</p>
+                            <small><strong>Size:</strong> ~2MB | <strong>OS:</strong> Windows</small>
+                            <div class="mt-2">
+                                <a href="http://steghide.sourceforge.net/download.php" target="_blank" class="btn btn-info btn-sm">
+                                    <i class="fas fa-download"></i> Download Steghide
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="download-item tool-download">
+                            <h6><i class="fas fa-code"></i> Burp Suite</h6>
+                            <p class="text-muted">Web security testing</p>
+                            <small><strong>Size:</strong> ~150MB | <strong>Version:</strong> Community</small>
+                            <div class="mt-2">
+                                <a href="https://portswigger.net/burp/communitydownload" target="_blank" class="btn btn-secondary btn-sm">
+                                    <i class="fas fa-download"></i> Download Burp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Online Tools & Resources -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-cloud"></i> Online Analysis Tools - No Download Required</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6><i class="fas fa-image"></i> Image Analysis</h6>
+                        <div class="tool-links">
+                            <a href="https://exifdata.com/" target="_blank" class="btn btn-outline-primary btn-sm mb-2">
+                                <i class="fas fa-external-link-alt"></i> EXIF Data Viewer
+                            </a>
+                            <a href="https://www.photopea.com/" target="_blank" class="btn btn-outline-primary btn-sm mb-2">
+                                <i class="fas fa-external-link-alt"></i> Photopea Editor
+                            </a>
+                            <a href="https://stylesuxx.github.io/steganography/" target="_blank" class="btn btn-outline-primary btn-sm mb-2">
+                                <i class="fas fa-external-link-alt"></i> Online Steganography
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <h6><i class="fas fa-lock"></i> Cryptography</h6>
+                        <div class="tool-links">
+                            <a href="https://gchq.github.io/CyberChef/" target="_blank" class="btn btn-outline-success btn-sm mb-2">
+                                <i class="fas fa-external-link-alt"></i> CyberChef
+                            </a>
+                            <a href="https://www.dcode.fr/" target="_blank" class="btn btn-outline-success btn-sm mb-2">
+                                <i class="fas fa-external-link-alt"></i> dCode Cipher Tools
+                            </a>
+                            <a href="https://crackstation.net/" target="_blank" class="btn btn-outline-success btn-sm mb-2">
+                                <i class="fas fa-external-link-alt"></i> Hash Cracker
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <h6><i class="fas fa-qrcode"></i> Decoders & Converters</h6>
+                        <div class="tool-links">
+                            <a href="https://webqr.com/" target="_blank" class="btn btn-outline-warning btn-sm mb-2">
+                                <i class="fas fa-external-link-alt"></i> QR Code Scanner
+                            </a>
+                            <a href="https://www.rapidtables.com/convert/number/binary-to-ascii.html" target="_blank" class="btn btn-outline-warning btn-sm mb-2">
+                                <i class="fas fa-external-link-alt"></i> Binary to ASCII
+                            </a>
+                            <a href="https://www.base64decode.org/" target="_blank" class="btn btn-outline-warning btn-sm mb-2">
+                                <i class="fas fa-external-link-alt"></i> Base64 Decoder
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

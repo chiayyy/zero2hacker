@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Leaderboard - Zero2Hacker{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="text-white mb-4">
+            <i class="fas fa-trophy"></i> Leaderboard
+        </h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-crown"></i> Top Performers</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Username</th>
+                                <th>Level</th>
+                                <th>Points</th>
+                                <th>Challenges Solved</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for leader in leaderboard %}
+                            <tr class="{% if leader.username == user.username %}table-primary{% endif %}">
+                                <td>
+                                    {% if loop.index == 1 %}
+                                        <span class="badge bg-warning"><i class="fas fa-crown"></i> #1</span>
+                                    {% elif loop.index == 2 %}
+                                        <span class="badge bg-secondary"><i class="fas fa-medal"></i> #2</span>
+                                    {% elif loop.index == 3 %}
+                                        <span class="badge bg-warning"><i class="fas fa-medal"></i> #3</span>
+                                    {% else %}
+                                        <span class="badge bg-light text-dark">#{{ loop.index }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <strong>{{ leader.username }}</strong>
+                                    {% if leader.username == user.username %}
+                                        <span class="badge bg-info ms-2">You</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">Level {{ leader.level }}</span>
+                                </td>
+                                <td>
+                                    <strong class="text-success">{{ leader.total_points }}</strong> pts
+                                </td>
+                                <td>
+                                    {{ leader.challenges_solved }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-trophy fa-3x text-warning mb-3"></i>
+                <h5>🥇 Gold</h5>
+                <p class="text-muted">Top 3 performers</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-medal fa-3x text-info mb-3"></i>
+                <h5>🥈 Silver</h5>
+                <p class="text-muted">Top 10 performers</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-award fa-3x text-secondary mb-3"></i>
+                <h5>🥉 Bronze</h5>
+                <p class="text-muted">All participants</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body text-center">
+                <h5>Want to climb the leaderboard?</h5>
+                <p class="text-muted">Solve more challenges to earn points and improve your ranking!</p>
+                <a href="/challenges" class="btn btn-primary">
+                    <i class="fas fa-puzzle-piece"></i> Browse Challenges
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

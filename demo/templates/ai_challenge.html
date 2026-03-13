@@ -1,0 +1,372 @@
+{% extends "base.html" %}
+
+{% block title %}AI Challenge Generator - Zero2Hacker{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="text-white mb-4">
+            <i class="fas fa-robot"></i> AI Challenge Generator
+            <span class="badge bg-primary ms-2">Powered by Kelnes</span>
+        </h2>
+        <p class="text-light">Get personalized challenges based on your progress and skill level!</p>
+    </div>
+</div>
+
+<!-- User Progress Analysis -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-chart-line"></i> Your Progress Analysis</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-6">
+                        <h3 class="text-primary">{{ analysis.total_solved }}</h3>
+                        <small class="text-muted">Challenges Solved</small>
+                    </div>
+                    <div class="col-6">
+                        <h3 class="text-success">{{ "%.1f"|format(analysis.avg_points) }}</h3>
+                        <small class="text-muted">Avg Points</small>
+                    </div>
+                </div>
+                <hr>
+                <div class="mb-2">
+                    <strong>Skill Level:</strong>
+                    <span class="badge bg-{% if analysis.skill_level == 'expert' %}danger{% elif analysis.skill_level == 'hard' %}warning{% elif analysis.skill_level == 'medium' %}info{% elif analysis.skill_level == 'easy' %}success{% else %}secondary{% endif %}">
+                        {{ analysis.skill_level.title() }}
+                    </span>
+                </div>
+                {% if analysis.preferred_category %}
+                <div class="mb-2">
+                    <strong>Preferred Category:</strong>
+                    <span class="badge bg-primary">{{ analysis.preferred_category.title() }}</span>
+                </div>
+                {% endif %}
+                {% if analysis.categories_attempted %}
+                <div>
+                    <strong>Categories Attempted:</strong><br>
+                    {% for category, stats in analysis.categories_attempted.items() %}
+                        <span class="badge bg-outline-light me-1">{{ category.title() }} ({{ stats.solved }})</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-bullseye"></i> Challenge Recommendations</h5>
+            </div>
+            <div class="card-body">
+                <div id="recommendations">
+                    {% if analysis.total_solved == 0 %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-lightbulb"></i>
+                            <strong>New to CTFs?</strong> Start with beginner challenges to build your foundation!
+                        </div>
+                    {% elif analysis.skill_level == 'beginner' %}
+                        <div class="alert alert-success">
+                            <i class="fas fa-seedling"></i>
+                            <strong>Great start!</strong> Try some easy challenges to expand your skills.
+                        </div>
+                    {% else %}
+                        <div class="alert alert-primary">
+                            <i class="fas fa-trophy"></i>
+                            <strong>You're doing well!</strong> Ready for more advanced challenges?
+                        </div>
+                    {% endif %}
+
+                    <div class="mt-3">
+                        <h6>Suggested Next Steps:</h6>
+                        <ul class="list-unstyled">
+                            {% if analysis.total_solved < 5 %}
+                                <li><i class="fas fa-arrow-right text-primary"></i> Focus on intro and easy challenges</li>
+                                <li><i class="fas fa-arrow-right text-primary"></i> Try different categories to find your strengths</li>
+                            {% elif analysis.skill_level in ['easy', 'medium'] %}
+                                <li><i class="fas fa-arrow-right text-primary"></i> Challenge yourself with {{ 'medium' if analysis.skill_level == 'easy' else 'hard' }} difficulties</li>
+                                <li><i class="fas fa-arrow-right text-primary"></i> Explore categories you haven't tried yet</li>
+                            {% else %}
+                                <li><i class="fas fa-arrow-right text-primary"></i> Take on expert-level challenges</li>
+                                <li><i class="fas fa-arrow-right text-primary"></i> Try advanced topics in your preferred categories</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Challenge Generator -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-magic"></i> Generate Your Personal Challenge</h5>
+            </div>
+            <div class="card-body">
+                <form id="generateForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Category</label>
+                                <select class="form-select" id="category" name="category">
+                                    <option value="">Auto-select (Recommended)</option>
+                                    <option value="crypto">Cryptography</option>
+                                    <option value="web">Web Security</option>
+                                    <option value="reverse">Reverse Engineering</option>
+                                    <option value="forensics">Forensics</option>
+                                    <option value="steganography">Steganography</option>
+                                    <option value="pwn">Binary Exploitation</option>
+                                    <option value="osint">OSINT</option>
+                                    <option value="network">Network Security</option>
+                                    <option value="misc">Miscellaneous</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="difficulty" class="form-label">Difficulty</label>
+                                <select class="form-select" id="difficulty" name="difficulty">
+                                    <option value="">Auto-select (Based on your level)</option>
+                                    <option value="beginner">Beginner</option>
+                                    <option value="easy">Easy</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="hard">Hard</option>
+                                    <option value="expert">Expert</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-magic"></i> Generate Challenge
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Loading indicator -->
+                <div id="loadingIndicator" class="text-center mt-4" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Generating...</span>
+                    </div>
+                    <p class="mt-2">Kelnes is creating your personalized challenge...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Generated Challenge Display -->
+<div class="row mt-4" id="challengeResult" style="display: none;">
+    <div class="col-12">
+        <div class="card border-success">
+            <div class="card-header bg-success text-white">
+                <h5><i class="fas fa-star"></i> Your Personalized Challenge</h5>
+            </div>
+            <div class="card-body">
+                <div id="challengeContent">
+                    <!-- Challenge will be loaded here -->
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="flagInput" placeholder="Enter your flag here...">
+                            <button class="btn btn-primary" type="button" id="submitFlag">
+                                <i class="fas fa-check"></i> Submit Flag
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-info" id="getHint" style="display: none;">
+                            <i class="fas fa-lightbulb"></i> Get Hint
+                        </button>
+                        <button class="btn btn-secondary" id="generateAnother">
+                            <i class="fas fa-redo"></i> Generate Another
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hints display -->
+                <div id="hintsDisplay" class="mt-3" style="display: none;">
+                    <div class="alert alert-info">
+                        <strong><i class="fas fa-lightbulb"></i> Hint:</strong>
+                        <span id="currentHint"></span>
+                    </div>
+                </div>
+
+                <!-- Result display -->
+                <div id="resultDisplay" class="mt-3" style="display: none;">
+                    <!-- Success/failure message will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentChallenge = null;
+let currentHintIndex = 0;
+
+document.getElementById('generateForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const category = document.getElementById('category').value;
+    const difficulty = document.getElementById('difficulty').value;
+
+    // Show loading
+    document.getElementById('loadingIndicator').style.display = 'block';
+    document.getElementById('challengeResult').style.display = 'none';
+
+    try {
+        const response = await fetch('/api/generate-challenge', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                category: category,
+                difficulty: difficulty
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            currentChallenge = data.challenge;
+            currentHintIndex = 0;
+            displayChallenge(data.challenge);
+        } else {
+            alert('Error generating challenge: ' + data.error);
+        }
+    } catch (error) {
+        alert('Failed to generate challenge. Please try again.');
+    } finally {
+        document.getElementById('loadingIndicator').style.display = 'none';
+    }
+});
+
+function displayChallenge(challenge) {
+    const challengeContent = document.getElementById('challengeContent');
+
+    challengeContent.innerHTML = `
+        <div class="row">
+            <div class="col-md-8">
+                <h4>${challenge.title}</h4>
+                <div class="mb-3">
+                    <span class="badge bg-primary">${challenge.category.charAt(0).toUpperCase() + challenge.category.slice(1)}</span>
+                    <span class="badge bg-warning">${challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}</span>
+                    <span class="badge bg-success">${challenge.points} pts</span>
+                </div>
+                <p class="lead">${challenge.description}</p>
+                ${challenge.explanation ? '<div class="alert alert-light"><strong>About this challenge:</strong> ' + challenge.explanation + '</div>' : ''}
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h6><i class="fas fa-info-circle"></i> Challenge Details</h6>
+                        <ul class="list-unstyled mb-0">
+                            <li><strong>Category:</strong> ${challenge.category}</li>
+                            <li><strong>Difficulty:</strong> ${challenge.difficulty}</li>
+                            <li><strong>Points:</strong> ${challenge.points}</li>
+                            <li><strong>Hints Available:</strong> ${challenge.hints.length}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Reset UI elements
+    document.getElementById('flagInput').value = '';
+    document.getElementById('hintsDisplay').style.display = 'none';
+    document.getElementById('resultDisplay').style.display = 'none';
+    document.getElementById('getHint').style.display = 'inline-block';
+
+    // Show challenge
+    document.getElementById('challengeResult').style.display = 'block';
+    document.getElementById('challengeResult').scrollIntoView({ behavior: 'smooth' });
+}
+
+document.getElementById('submitFlag').addEventListener('click', function() {
+    const flagInput = document.getElementById('flagInput');
+    const submittedFlag = flagInput.value.trim();
+
+    if (!submittedFlag) {
+        alert('Please enter a flag');
+        return;
+    }
+
+    if (!currentChallenge) {
+        alert('No challenge available');
+        return;
+    }
+
+    const isCorrect = submittedFlag.toLowerCase() === currentChallenge.flag.toLowerCase();
+    const resultDisplay = document.getElementById('resultDisplay');
+
+    if (isCorrect) {
+        resultDisplay.innerHTML = `
+            <div class="alert alert-success">
+                <h5><i class="fas fa-trophy"></i> Congratulations!</h5>
+                <p>You successfully solved the challenge! You would earn <strong>${currentChallenge.points} points</strong> for this solution.</p>
+                <p><small>Note: AI-generated challenges are for practice only and don't affect your actual score.</small></p>
+            </div>
+        `;
+    } else {
+        resultDisplay.innerHTML = `
+            <div class="alert alert-danger">
+                <h5><i class="fas fa-times"></i> Incorrect Flag</h5>
+                <p>That's not the correct flag. Keep trying! Need help? Use the hint button.</p>
+            </div>
+        `;
+    }
+
+    resultDisplay.style.display = 'block';
+});
+
+document.getElementById('getHint').addEventListener('click', function() {
+    if (!currentChallenge || !currentChallenge.hints) {
+        alert('No hints available');
+        return;
+    }
+
+    if (currentHintIndex >= currentChallenge.hints.length) {
+        alert('No more hints available');
+        return;
+    }
+
+    const hint = currentChallenge.hints[currentHintIndex];
+    document.getElementById('currentHint').textContent = hint;
+    document.getElementById('hintsDisplay').style.display = 'block';
+
+    currentHintIndex++;
+
+    if (currentHintIndex >= currentChallenge.hints.length) {
+        document.getElementById('getHint').style.display = 'none';
+    }
+});
+
+document.getElementById('generateAnother').addEventListener('click', function() {
+    document.getElementById('generateForm').dispatchEvent(new Event('submit'));
+});
+
+// Auto-select recommended options based on user analysis
+{% if analysis.preferred_category %}
+document.getElementById('category').value = '{{ analysis.preferred_category }}';
+{% endif %}
+
+{% if analysis.skill_level %}
+const skillLevel = '{{ analysis.skill_level }}';
+if (skillLevel === 'beginner' || skillLevel === 'easy') {
+    document.getElementById('difficulty').value = skillLevel === 'beginner' ? 'easy' : 'medium';
+} else {
+    document.getElementById('difficulty').value = skillLevel;
+}
+{% endif %}
+</script>
+{% endblock %}

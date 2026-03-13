@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Login Portal - SQL Injection Challenge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 50px 0;
+        }
+        .login-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .challenge-info {
+            background: #e7f3ff;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .terminal {
+            background: #000;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-container">
+            <h2 class="text-center mb-4">🔐 Secure Login Portal</h2>
+            <p class="text-center text-muted">Welcome to our highly secure authentication system!</p>
+
+            {% if success %}
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> <strong>Success!</strong> {{ message }}
+                <br><br>
+                <strong>Flag:</strong> <code>{{ flag }}</code>
+                <br><br>
+                <small>You can now submit this flag in the main challenge!</small>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="alert alert-danger">
+                <i class="fas fa-times-circle"></i> {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </div>
+            </form>
+
+            <div class="challenge-info mt-4">
+                <strong>🎯 Challenge:</strong> This login form is vulnerable to SQL injection.
+                Find a way to bypass the authentication without knowing valid credentials!
+            </div>
+
+            <div class="mt-3">
+                <small><strong>Hints:</strong></small>
+                <ul class="small">
+                    <li>Try common SQL injection payloads</li>
+                    <li>Think about how to make the SQL query always return true</li>
+                    <li>The goal is to login as any user without knowing the password</li>
+                    <li>Example payload: <code>' OR '1'='1'--</code></li>
+                </ul>
+            </div>
+
+            <div class="terminal">
+                <div>SQL Query being executed:</div>
+                <div>SELECT * FROM users WHERE username = 'INPUT' AND password_hash = 'INPUT'</div>
+                <div class="text-warning">⚠️ User input is directly inserted into the query!</div>
+            </div>
+
+            <div class="text-center mt-3">
+                <a href="/challenge/3" class="btn btn-outline-secondary btn-sm">
+                    ← Back to Challenge
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

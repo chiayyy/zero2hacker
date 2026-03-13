@@ -1,0 +1,36 @@
+===============================================
+    STEGANOGRAPHY - HIDDEN MESSAGE
+===============================================
+
+Sometimes secrets hide in plain sight...
+The art of hiding messages is called steganography.
+Look carefully at the poem below.
+
+-------------------
+THE HIDDEN POEM
+-------------------
+
+Softly whispers the wind at night,
+Telling tales of ancient might.
+Every shadow holds a key,
+Gently waiting, wild and free.
+
+Always searching, never still,
+Near the mountains, past the hill.
+Over rivers, through the glen,
+Great adventures start and then...
+
+Rivers flow to distant seas,
+Amazing views through autumn trees.
+Perhaps you've found what hides in plain,
+Hidden meanings in the rain.
+Years of secrets, now revealed!
+
+-------------------
+
+HINT: Read the FIRST LETTER of each line in the poem above.
+The flag format is: FLAG{first_word_second_word}
+
+Example: If letters spell "HELLOWORLD", flag might be FLAG{hello_world}
+
+===============================================

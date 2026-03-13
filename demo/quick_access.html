@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero2Hacker CTF Platform - Quick Access</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            margin: 0;
+            padding: 50px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .status {
+            background: #22c55e;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+        .access-links {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .access-link {
+            display: block;
+            background: rgba(34, 197, 94, 0.2);
+            color: white;
+            text-decoration: none;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #22c55e;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        .access-link:hover {
+            background: rgba(34, 197, 94, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        }
+        .credentials {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .troubleshoot {
+            background: rgba(239, 68, 68, 0.2);
+            border: 2px solid #ef4444;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        .test-button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin: 10px;
+            transition: background 0.3s ease;
+        }
+        .test-button:hover {
+            background: #2563eb;
+        }
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .feature {
+            background: rgba(168, 85, 247, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #a855f7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Zero2Hacker CTF Platform</h1>
+
+        <div class="status">
+            ✅ Platform is Ready! Click any link below to access
+        </div>
+
+        <h2>🌐 Access Your CTF Platform:</h2>
+        <div class="access-links">
+            <a href="http://127.0.0.1:5000" class="access-link" target="_blank">
+                🔗 Primary Access: http://127.0.0.1:5000
+            </a>
+            <a href="http://localhost:5000" class="access-link" target="_blank">
+                🔗 Alternative: http://localhost:5000
+            </a>
+            <a href="http://10.100.9.162:5000" class="access-link" target="_blank">
+                🔗 Network Access: http://10.100.9.162:5000
+            </a>
+        </div>
+
+        <div class="credentials">
+            <h3>🔑 Login Credentials:</h3>
+            <p><strong>Username:</strong> <code>admin</code></p>
+            <p><strong>Password:</strong> <code>admin123</code></p>
+        </div>
+
+        <h3>🎮 Platform Features:</h3>
+        <div class="feature-list">
+            <div class="feature">
+                <strong>10 Beginner Challenges</strong><br>
+                Easy-to-follow CTF challenges
+            </div>
+            <div class="feature">
+                <strong>Download System</strong><br>
+                Real files for hands-on practice
+            </div>
+            <div class="feature">
+                <strong>Hint System</strong><br>
+                Get help when stuck (with point deduction)
+            </div>
+            <div class="feature">
+                <strong>Kelnes AI Assistant</strong><br>
+                Smart AI helper for guidance
+            </div>
+            <div class="feature">
+                <strong>Progress Tracking</strong><br>
+                Points, leaderboard, and stats
+            </div>
+            <div class="feature">
+                <strong>Day/Night Mode</strong><br>
+                Toggle between themes
+            </div>
+        </div>
+
+        <div class="troubleshoot">
+            <h3>🔧 If Links Don't Work:</h3>
+            <ol>
+                <li><strong>Clear Browser Cache:</strong> Press Ctrl+F5</li>
+                <li><strong>Try Private/Incognito Mode:</strong> Right-click browser → New incognito window</li>
+                <li><strong>Check Windows Defender:</strong> Temporarily disable real-time protection</li>
+                <li><strong>Try Different Browser:</strong> Chrome, Firefox, or Edge</li>
+                <li><strong>Restart Computer:</strong> Sometimes Windows networking needs a restart</li>
+            </ol>
+
+            <h4>🧪 Network Test:</h4>
+            <button class="test-button" onclick="testConnection('127.0.0.1:5000')">Test Primary Link</button>
+            <button class="test-button" onclick="testConnection('localhost:5000')">Test Alternative</button>
+            <button class="test-button" onclick="location.reload()">Refresh This Page</button>
+        </div>
+    </div>
+
+    <script>
+        function testConnection(url) {
+            const fullUrl = 'http://' + url;
+            console.log('Testing connection to:', fullUrl);
+
+            // Try to fetch from the server
+            fetch(fullUrl)
+                .then(response => {
+                    if (response.ok) {
+                        alert('✅ SUCCESS! Server is reachable at ' + fullUrl + '\n\nClick OK to open the platform.');
+                        window.open(fullUrl, '_blank');
+                    } else {
+                        alert('⚠️ Server responded but with error code: ' + response.status);
+                    }
+                })
+                .catch(error => {
+                    alert('❌ Cannot connect to ' + fullUrl + '\n\nError: ' + error.message + '\n\nTry:\n1. Clear browser cache\n2. Check firewall settings\n3. Try a different browser');
+                });
+        }
+
+        // Auto-test primary connection on page load
+        setTimeout(() => {
+            fetch('http://127.0.0.1:5000')
+                .then(response => {
+                    if (response.ok) {
+                        document.querySelector('.status').innerHTML = '✅ Platform is Online and Responding!';
+                        document.querySelector('.status').style.background = '#22c55e';
+                    }
+                })
+                .catch(error => {
+                    document.querySelector('.status').innerHTML = '⚠️ Platform not responding - Check troubleshooting steps below';
+                    document.querySelector('.status').style.background = '#f59e0b';
+                });
+        }, 1000);
+    </script>
+</body>
+</html>

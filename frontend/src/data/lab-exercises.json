@@ -1,0 +1,480 @@
+[
+  {
+    "id": "lab-caesar-l1",
+    "labId": "lab-caesar",
+    "level": 1,
+    "title": "Caesar Cipher — Block Builder",
+    "description": "Arrange the blocks in the correct order to build a Caesar cipher encoder.",
+    "narrative": "Welcome, Agent. Let's start with the basics. Drag and arrange these blocks to build the logic for encoding a message with the Caesar cipher.",
+    "category": "crypto",
+    "rewardXP": 75,
+    "blocks": [
+      { "id": "caesar-start", "type": "caesar_start", "label": "START with the message text", "color": "#00d4ff", "nextStatement": true },
+      { "id": "caesar-loop", "type": "caesar_loop", "label": "FOR EACH letter in the message", "color": "#a855f7", "previousStatement": true, "nextStatement": true },
+      { "id": "caesar-check", "type": "caesar_check", "label": "CHECK if character is a letter", "color": "#22c55e", "previousStatement": true, "nextStatement": true },
+      { "id": "caesar-shift", "type": "caesar_shift", "label": "SHIFT the letter forward by 3 positions", "color": "#eab308", "previousStatement": true, "nextStatement": true, "fields": [{ "name": "shift", "type": "number", "default": 3 }] },
+      { "id": "caesar-wrap", "type": "caesar_wrap", "label": "WRAP around if past Z (use modulo 26)", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "caesar-build", "type": "caesar_build", "label": "ADD the shifted letter to the result", "color": "#22c55e", "previousStatement": true, "nextStatement": true },
+      { "id": "caesar-end", "type": "caesar_end", "label": "RETURN the encoded message", "color": "#00d4ff", "previousStatement": true }
+    ],
+    "correctBlockOrder": ["caesar-start", "caesar-loop", "caesar-check", "caesar-shift", "caesar-wrap", "caesar-build", "caesar-end"],
+    "hints": ["Start by getting the message text", "You need to go through each letter one by one", "After shifting, don't forget to handle letters past Z"]
+  },
+  {
+    "id": "lab-caesar-l2",
+    "labId": "lab-caesar",
+    "level": 2,
+    "title": "Caesar Cipher — Blocks + Code View",
+    "description": "Arrange blocks and watch the code generate in real time.",
+    "narrative": "Now let's see how blocks translate to actual code. Arrange the blocks on the left and watch the code appear on the right.",
+    "category": "crypto",
+    "rewardXP": 100,
+    "blocks": [
+      { "id": "caesar-start", "type": "caesar_start", "label": "START with the message text", "color": "#00d4ff", "nextStatement": true },
+      { "id": "caesar-loop", "type": "caesar_loop", "label": "FOR EACH letter in the message", "color": "#a855f7", "previousStatement": true, "nextStatement": true },
+      { "id": "caesar-check", "type": "caesar_check", "label": "CHECK if character is a letter", "color": "#22c55e", "previousStatement": true, "nextStatement": true },
+      { "id": "caesar-shift", "type": "caesar_shift", "label": "SHIFT the letter forward by 3 positions", "color": "#eab308", "previousStatement": true, "nextStatement": true, "fields": [{ "name": "shift", "type": "number", "default": 3 }] },
+      { "id": "caesar-wrap", "type": "caesar_wrap", "label": "WRAP around if past Z (use modulo 26)", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "caesar-build", "type": "caesar_build", "label": "ADD the shifted letter to the result", "color": "#22c55e", "previousStatement": true, "nextStatement": true },
+      { "id": "caesar-end", "type": "caesar_end", "label": "RETURN the encoded message", "color": "#00d4ff", "previousStatement": true }
+    ],
+    "correctBlockOrder": ["caesar-start", "caesar-loop", "caesar-check", "caesar-shift", "caesar-wrap", "caesar-build", "caesar-end"],
+    "hints": ["The code on the right updates as you arrange blocks", "Notice how each block maps to a line of code", "Try to match the logical flow"]
+  },
+  {
+    "id": "lab-caesar-l3",
+    "labId": "lab-caesar",
+    "level": 3,
+    "title": "Caesar Cipher — Fill in the Blanks",
+    "description": "Complete the Caesar cipher code by filling in the missing parts.",
+    "narrative": "You understand the logic. Now fill in the blanks to complete the real code. Each blank needs the correct JavaScript expression.",
+    "category": "crypto",
+    "rewardXP": 125,
+    "blankTemplate": "function caesarEncode(text, shift) {\n  return text.split('').map(char => {\n    if (char.match(___BLANK_0___)) {\n      const code = char.___BLANK_1___;\n      const base = char === char.toUpperCase() ? ___BLANK_2___ : 97;\n      return String.fromCharCode(((code - base + shift) % ___BLANK_3___) + base);\n    }\n    return char;\n  }).join('');\n}",
+    "blanks": [
+      { "id": 0, "answer": "/[a-z]/i", "hint": "A regex that matches any letter (case insensitive)" },
+      { "id": 1, "answer": "charCodeAt(0)", "hint": "Method to get the ASCII code of a character" },
+      { "id": 2, "answer": "65", "hint": "ASCII code of uppercase 'A'" },
+      { "id": 3, "answer": "26", "hint": "Number of letters in the alphabet" }
+    ],
+    "hints": ["Regular expressions use /pattern/flags syntax", "charCodeAt gives you the numeric ASCII value", "The alphabet has 26 letters, A starts at ASCII 65"]
+  },
+  {
+    "id": "lab-caesar-l4",
+    "labId": "lab-caesar",
+    "level": 4,
+    "title": "Caesar Cipher — Full Code",
+    "description": "Write the complete Caesar cipher encoder from scratch.",
+    "narrative": "Final challenge: write the full Caesar cipher implementation. Your function must encode any text with a given shift value.",
+    "category": "crypto",
+    "rewardXP": 150,
+    "starterCode": "function caesarEncode(text, shift) {\n  // Your code here\n  // Shift each letter by 'shift' positions\n  // Keep non-letter characters unchanged\n  return '';\n}",
+    "solution": "function caesarEncode(text, shift) {\n  return text.split('').map(char => {\n    if (char.match(/[a-z]/i)) {\n      const code = char.charCodeAt(0);\n      const base = char === char.toUpperCase() ? 65 : 97;\n      return String.fromCharCode(((code - base + shift) % 26) + base);\n    }\n    return char;\n  }).join('');\n}",
+    "testCases": [
+      { "input": "HELLO, 3", "expectedOutput": "KHOOR", "description": "Shift HELLO by 3" },
+      { "input": "abc, 1", "expectedOutput": "bcd", "description": "Shift abc by 1" },
+      { "input": "XYZ, 3", "expectedOutput": "ABC", "description": "Wrap around Z" }
+    ],
+    "hints": ["Use charCodeAt() to get the ASCII value", "Uppercase A-Z starts at 65, lowercase a-z at 97", "Use modulo 26 to wrap around the alphabet"]
+  },
+
+  {
+    "id": "lab-password-l1",
+    "labId": "lab-password",
+    "level": 1,
+    "title": "Password Checker — Block Builder",
+    "description": "Arrange blocks to build a password strength checker.",
+    "narrative": "Let's build a password strength checker step by step. Arrange these blocks in the right order to evaluate password security.",
+    "category": "logic",
+    "rewardXP": 75,
+    "blocks": [
+      { "id": "pw-start", "type": "pw_start", "label": "START with the password", "color": "#00d4ff", "nextStatement": true },
+      { "id": "pw-score", "type": "pw_score", "label": "SET score to 0", "color": "#a855f7", "previousStatement": true, "nextStatement": true },
+      { "id": "pw-length", "type": "pw_length", "label": "CHECK if length is at least 8 characters", "color": "#22c55e", "previousStatement": true, "nextStatement": true, "fields": [{ "name": "minLength", "type": "number", "default": 8 }] },
+      { "id": "pw-upper", "type": "pw_upper", "label": "CHECK for uppercase letters (A-Z)", "color": "#eab308", "previousStatement": true, "nextStatement": true },
+      { "id": "pw-lower", "type": "pw_lower", "label": "CHECK for lowercase letters (a-z)", "color": "#eab308", "previousStatement": true, "nextStatement": true },
+      { "id": "pw-number", "type": "pw_number", "label": "CHECK for numbers (0-9)", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "pw-special", "type": "pw_special", "label": "CHECK for special characters (!@#$)", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "pw-return", "type": "pw_return", "label": "RETURN the total score", "color": "#00d4ff", "previousStatement": true }
+    ],
+    "correctBlockOrder": ["pw-start", "pw-score", "pw-length", "pw-upper", "pw-lower", "pw-number", "pw-special", "pw-return"],
+    "hints": ["Start by getting the password input", "Initialize the score before checking criteria", "Each check adds 1 to the score"]
+  },
+  {
+    "id": "lab-password-l2",
+    "labId": "lab-password",
+    "level": 2,
+    "title": "Password Checker — Blocks + Code View",
+    "description": "Build the password checker with blocks and see the code.",
+    "narrative": "See how each checking block translates to a real code pattern using regular expressions.",
+    "category": "logic",
+    "rewardXP": 100,
+    "blocks": [
+      { "id": "pw-start", "type": "pw_start", "label": "START with the password", "color": "#00d4ff", "nextStatement": true },
+      { "id": "pw-score", "type": "pw_score", "label": "SET score to 0", "color": "#a855f7", "previousStatement": true, "nextStatement": true },
+      { "id": "pw-length", "type": "pw_length", "label": "CHECK if length is at least 8 characters", "color": "#22c55e", "previousStatement": true, "nextStatement": true, "fields": [{ "name": "minLength", "type": "number", "default": 8 }] },
+      { "id": "pw-upper", "type": "pw_upper", "label": "CHECK for uppercase letters (A-Z)", "color": "#eab308", "previousStatement": true, "nextStatement": true },
+      { "id": "pw-lower", "type": "pw_lower", "label": "CHECK for lowercase letters (a-z)", "color": "#eab308", "previousStatement": true, "nextStatement": true },
+      { "id": "pw-number", "type": "pw_number", "label": "CHECK for numbers (0-9)", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "pw-special", "type": "pw_special", "label": "CHECK for special characters (!@#$)", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "pw-return", "type": "pw_return", "label": "RETURN the total score", "color": "#00d4ff", "previousStatement": true }
+    ],
+    "correctBlockOrder": ["pw-start", "pw-score", "pw-length", "pw-upper", "pw-lower", "pw-number", "pw-special", "pw-return"],
+    "hints": ["Watch how regex patterns appear in the code", "Each CHECK block becomes an if statement with regex", "The score increments for each passing check"]
+  },
+  {
+    "id": "lab-password-l3",
+    "labId": "lab-password",
+    "level": 3,
+    "title": "Password Checker — Fill in the Blanks",
+    "description": "Complete the password strength checker by filling in the regex patterns.",
+    "narrative": "Fill in the missing regular expressions and values to complete the password checker.",
+    "category": "logic",
+    "rewardXP": 125,
+    "blankTemplate": "function checkStrength(password) {\n  let score = 0;\n  if (password.length >= ___BLANK_0___) score++;\n  if (___BLANK_1___.test(password)) score++;\n  if (/[a-z]/.test(password)) score++;\n  if (___BLANK_2___.test(password)) score++;\n  if (___BLANK_3___.test(password)) score++;\n  return score;\n}",
+    "blanks": [
+      { "id": 0, "answer": "8", "hint": "Minimum password length" },
+      { "id": 1, "answer": "/[A-Z]/", "hint": "Regex for uppercase letters" },
+      { "id": 2, "answer": "/[0-9]/", "hint": "Regex for digits" },
+      { "id": 3, "answer": "/[^A-Za-z0-9]/", "hint": "Regex for special characters (anything NOT a letter or digit)" }
+    ],
+    "hints": ["The minimum length for a secure password is 8", "Use character classes like [A-Z] in regex", "Special characters are anything that isn't a letter or digit"]
+  },
+  {
+    "id": "lab-password-l4",
+    "labId": "lab-password",
+    "level": 4,
+    "title": "Password Checker — Full Code",
+    "description": "Write the complete password strength checker from scratch.",
+    "narrative": "Build the full password checker. Score from 0-5 based on length, uppercase, lowercase, numbers, and special characters.",
+    "category": "logic",
+    "rewardXP": 150,
+    "starterCode": "function checkStrength(password) {\n  let score = 0;\n  // Check length (>= 8)\n  // Check uppercase letters\n  // Check lowercase letters\n  // Check numbers\n  // Check special characters\n  return score;\n}",
+    "solution": "function checkStrength(password) {\n  let score = 0;\n  if (password.length >= 8) score++;\n  if (/[A-Z]/.test(password)) score++;\n  if (/[a-z]/.test(password)) score++;\n  if (/[0-9]/.test(password)) score++;\n  if (/[^A-Za-z0-9]/.test(password)) score++;\n  return score;\n}",
+    "testCases": [
+      { "input": "abc", "expectedOutput": "1", "description": "Weak: only lowercase" },
+      { "input": "Abcdefgh1", "expectedOutput": "3", "description": "Good: length + upper + lower + number" },
+      { "input": "Str0ng!Pass", "expectedOutput": "5", "description": "Max: all criteria met" }
+    ],
+    "hints": ["Use regex to test for character types", "/[A-Z]/ tests for uppercase", "/[^A-Za-z0-9]/ tests for special characters"]
+  },
+
+  {
+    "id": "lab-base64-l1",
+    "labId": "lab-base64",
+    "level": 1,
+    "title": "Base64 Decoder — Block Builder",
+    "description": "Arrange the blocks to understand how Base64 decoding works.",
+    "narrative": "Base64 is everywhere in the cyber world. Arrange these blocks to understand the decoding process.",
+    "category": "crypto",
+    "rewardXP": 50,
+    "blocks": [
+      { "id": "b64-start", "type": "b64_start", "label": "START with the encoded string", "color": "#00d4ff", "nextStatement": true },
+      { "id": "b64-validate", "type": "b64_validate", "label": "CHECK if the string is valid Base64", "color": "#22c55e", "previousStatement": true, "nextStatement": true },
+      { "id": "b64-split", "type": "b64_split", "label": "SPLIT into groups of 4 characters", "color": "#a855f7", "previousStatement": true, "nextStatement": true },
+      { "id": "b64-lookup", "type": "b64_lookup", "label": "LOOK UP each character in Base64 table", "color": "#eab308", "previousStatement": true, "nextStatement": true },
+      { "id": "b64-convert", "type": "b64_convert", "label": "CONVERT to binary and regroup into bytes", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "b64-decode", "type": "b64_decode", "label": "DECODE bytes to readable text", "color": "#22c55e", "previousStatement": true, "nextStatement": true },
+      { "id": "b64-return", "type": "b64_return", "label": "RETURN the decoded message", "color": "#00d4ff", "previousStatement": true }
+    ],
+    "correctBlockOrder": ["b64-start", "b64-validate", "b64-split", "b64-lookup", "b64-convert", "b64-decode", "b64-return"],
+    "hints": ["Start with the encoded input", "Base64 uses groups of 4 characters", "Each group becomes 3 bytes of data"]
+  },
+  {
+    "id": "lab-base64-l2",
+    "labId": "lab-base64",
+    "level": 2,
+    "title": "Base64 Decoder — Blocks + Code View",
+    "description": "See how Base64 decoding blocks map to JavaScript code.",
+    "narrative": "JavaScript has a built-in function for Base64. Watch how the blocks simplify into clean code.",
+    "category": "crypto",
+    "rewardXP": 75,
+    "blocks": [
+      { "id": "b64-start", "type": "b64_start", "label": "START with the encoded string", "color": "#00d4ff", "nextStatement": true },
+      { "id": "b64-validate", "type": "b64_validate", "label": "CHECK if the string is valid Base64", "color": "#22c55e", "previousStatement": true, "nextStatement": true },
+      { "id": "b64-split", "type": "b64_split", "label": "SPLIT into groups of 4 characters", "color": "#a855f7", "previousStatement": true, "nextStatement": true },
+      { "id": "b64-lookup", "type": "b64_lookup", "label": "LOOK UP each character in Base64 table", "color": "#eab308", "previousStatement": true, "nextStatement": true },
+      { "id": "b64-convert", "type": "b64_convert", "label": "CONVERT to binary and regroup into bytes", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "b64-decode", "type": "b64_decode", "label": "DECODE bytes to readable text", "color": "#22c55e", "previousStatement": true, "nextStatement": true },
+      { "id": "b64-return", "type": "b64_return", "label": "RETURN the decoded message", "color": "#00d4ff", "previousStatement": true }
+    ],
+    "correctBlockOrder": ["b64-start", "b64-validate", "b64-split", "b64-lookup", "b64-convert", "b64-decode", "b64-return"],
+    "hints": ["JavaScript has atob() for Base64 decoding", "The code view shows the simplified version", "btoa() does the reverse — encoding"]
+  },
+  {
+    "id": "lab-base64-l3",
+    "labId": "lab-base64",
+    "level": 3,
+    "title": "Base64 Decoder — Fill in the Blanks",
+    "description": "Complete the Base64 decoder with error handling.",
+    "narrative": "Fill in the blanks to create a robust Base64 decoder with proper error handling.",
+    "category": "crypto",
+    "rewardXP": 100,
+    "blankTemplate": "function decode(encoded) {\n  ___BLANK_0___ {\n    return ___BLANK_1___(encoded);\n  } ___BLANK_2___ {\n    return 'ERROR: Invalid Base64 string';\n  }\n}",
+    "blanks": [
+      { "id": 0, "answer": "try", "hint": "Keyword to start error handling" },
+      { "id": 1, "answer": "atob", "hint": "Built-in function that decodes Base64" },
+      { "id": 2, "answer": "catch (e)", "hint": "Keyword to handle errors, with error variable" }
+    ],
+    "hints": ["Use try/catch for error handling", "atob() is JavaScript's built-in Base64 decoder", "The catch block needs a parameter for the error"]
+  },
+  {
+    "id": "lab-base64-l4",
+    "labId": "lab-base64",
+    "level": 4,
+    "title": "Base64 Decoder — Full Code",
+    "description": "Write the complete Base64 decoder with error handling.",
+    "narrative": "Write the full Base64 decoder. Handle invalid inputs gracefully with try/catch.",
+    "category": "crypto",
+    "rewardXP": 100,
+    "starterCode": "function decode(encoded) {\n  // Decode the Base64 string\n  // Handle errors for invalid input\n  return '';\n}",
+    "solution": "function decode(encoded) {\n  try {\n    return atob(encoded);\n  } catch (e) {\n    return 'ERROR: Invalid Base64 string';\n  }\n}",
+    "testCases": [
+      { "input": "SGVsbG8=", "expectedOutput": "Hello", "description": "Decode Hello" },
+      { "input": "Q3liZXJRdWVzdA==", "expectedOutput": "CyberQuest", "description": "Decode CyberQuest" },
+      { "input": "!!!invalid", "expectedOutput": "ERROR: Invalid Base64 string", "description": "Handle invalid input" }
+    ],
+    "hints": ["JavaScript has a built-in function called atob()", "Use try/catch for error handling", "Return an error message for invalid input"]
+  },
+
+  {
+    "id": "lab-validation-l1",
+    "labId": "lab-validation",
+    "level": 1,
+    "title": "Input Validator — Block Builder",
+    "description": "Arrange blocks to build an SQL injection detector.",
+    "narrative": "Web apps are under constant attack. Build an input validator by arranging these detection blocks in order.",
+    "category": "web",
+    "rewardXP": 100,
+    "blocks": [
+      { "id": "val-start", "type": "val_start", "label": "START with the user input", "color": "#00d4ff", "nextStatement": true },
+      { "id": "val-patterns", "type": "val_patterns", "label": "DEFINE dangerous SQL patterns to check", "color": "#a855f7", "previousStatement": true, "nextStatement": true },
+      { "id": "val-quotes", "type": "val_quotes", "label": "CHECK for quotes and semicolons (' \" ;)", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "val-comments", "type": "val_comments", "label": "CHECK for SQL comments (--)", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "val-union", "type": "val_union", "label": "CHECK for UNION SELECT attacks", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "val-drop", "type": "val_drop", "label": "CHECK for DROP TABLE attacks", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "val-or", "type": "val_or", "label": "CHECK for OR 1=1 bypass", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "val-return", "type": "val_return", "label": "RETURN true if any pattern found (dangerous!)", "color": "#00d4ff", "previousStatement": true }
+    ],
+    "correctBlockOrder": ["val-start", "val-patterns", "val-quotes", "val-comments", "val-union", "val-drop", "val-or", "val-return"],
+    "hints": ["Start by receiving the user input", "Define what patterns to look for first", "Check each dangerous pattern one by one"]
+  },
+  {
+    "id": "lab-validation-l2",
+    "labId": "lab-validation",
+    "level": 2,
+    "title": "Input Validator — Blocks + Code View",
+    "description": "See how SQL injection detection translates to regex code.",
+    "narrative": "Each detection block becomes a regular expression pattern. Watch the code build as you arrange blocks.",
+    "category": "web",
+    "rewardXP": 150,
+    "blocks": [
+      { "id": "val-start", "type": "val_start", "label": "START with the user input", "color": "#00d4ff", "nextStatement": true },
+      { "id": "val-patterns", "type": "val_patterns", "label": "DEFINE dangerous SQL patterns to check", "color": "#a855f7", "previousStatement": true, "nextStatement": true },
+      { "id": "val-quotes", "type": "val_quotes", "label": "CHECK for quotes and semicolons (' \" ;)", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "val-comments", "type": "val_comments", "label": "CHECK for SQL comments (--)", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "val-union", "type": "val_union", "label": "CHECK for UNION SELECT attacks", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "val-drop", "type": "val_drop", "label": "CHECK for DROP TABLE attacks", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "val-or", "type": "val_or", "label": "CHECK for OR 1=1 bypass", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "val-return", "type": "val_return", "label": "RETURN true if any pattern found (dangerous!)", "color": "#00d4ff", "previousStatement": true }
+    ],
+    "correctBlockOrder": ["val-start", "val-patterns", "val-quotes", "val-comments", "val-union", "val-drop", "val-or", "val-return"],
+    "hints": ["Each CHECK block becomes a regex pattern", "The .some() method tests all patterns", "Regex flags like /i make patterns case-insensitive"]
+  },
+  {
+    "id": "lab-validation-l3",
+    "labId": "lab-validation",
+    "level": 3,
+    "title": "Input Validator — Fill in the Blanks",
+    "description": "Complete the SQL injection detector by filling in regex patterns.",
+    "narrative": "Fill in the dangerous patterns that the validator should detect.",
+    "category": "web",
+    "rewardXP": 175,
+    "blankTemplate": "function isSQLInjection(input) {\n  const patterns = [\n    ___BLANK_0___,\n    /--/,\n    ___BLANK_1___,\n    /drop\\s+table/i,\n    ___BLANK_2___\n  ];\n  return patterns.___BLANK_3___(p => p.test(input));\n}",
+    "blanks": [
+      { "id": 0, "answer": "/['\";]/", "hint": "Regex matching single quotes, double quotes, or semicolons" },
+      { "id": 1, "answer": "/union\\s+select/i", "hint": "Regex for UNION followed by SELECT (case insensitive)" },
+      { "id": 2, "answer": "/or\\s+1\\s*=\\s*1/i", "hint": "Regex for the classic OR 1=1 bypass" },
+      { "id": 3, "answer": "some", "hint": "Array method that returns true if ANY element passes the test" }
+    ],
+    "hints": ["Character classes use brackets like [abc]", "\\s+ matches one or more whitespace characters", "The /i flag makes regex case-insensitive"]
+  },
+  {
+    "id": "lab-validation-l4",
+    "labId": "lab-validation",
+    "level": 4,
+    "title": "Input Validator — Full Code",
+    "description": "Write the complete SQL injection detector from scratch.",
+    "narrative": "Build the full SQL injection detector. Check for common attack patterns and return true if input is dangerous.",
+    "category": "web",
+    "rewardXP": 200,
+    "starterCode": "function isSQLInjection(input) {\n  // Check for common SQL injection patterns\n  // Return true if dangerous, false if safe\n  return false;\n}",
+    "solution": "function isSQLInjection(input) {\n  const patterns = [/['\";]/, /--/, /union\\s+select/i, /drop\\s+table/i, /or\\s+1\\s*=\\s*1/i];\n  return patterns.some(p => p.test(input));\n}",
+    "testCases": [
+      { "input": "admin' OR 1=1 --", "expectedOutput": "true", "description": "Classic SQL injection" },
+      { "input": "normaluser123", "expectedOutput": "false", "description": "Safe input" },
+      { "input": "'; DROP TABLE users;", "expectedOutput": "true", "description": "Drop table attack" }
+    ],
+    "hints": ["SQL injection uses SQL syntax in input fields", "Look for single quotes, semicolons, and double dashes", "Common patterns: OR 1=1, UNION SELECT, DROP TABLE"]
+  },
+
+  {
+    "id": "lab-hash-l1",
+    "labId": "lab-hash",
+    "level": 1,
+    "title": "Hash Function — Block Builder",
+    "description": "Arrange blocks to understand how a hash function works.",
+    "narrative": "Hashing is fundamental to cybersecurity. Arrange the blocks to build a simple hash function.",
+    "category": "crypto",
+    "rewardXP": 75,
+    "blocks": [
+      { "id": "hash-start", "type": "hash_start", "label": "START with the input string", "color": "#00d4ff", "nextStatement": true },
+      { "id": "hash-init", "type": "hash_init", "label": "SET hash value to 0", "color": "#a855f7", "previousStatement": true, "nextStatement": true },
+      { "id": "hash-loop", "type": "hash_loop", "label": "FOR EACH character in the string", "color": "#22c55e", "previousStatement": true, "nextStatement": true },
+      { "id": "hash-code", "type": "hash_code", "label": "GET the character's numeric code", "color": "#eab308", "previousStatement": true, "nextStatement": true },
+      { "id": "hash-mix", "type": "hash_mix", "label": "MIX the code into the hash (shift and add)", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "hash-clamp", "type": "hash_clamp", "label": "KEEP hash as a 32-bit number", "color": "#a855f7", "previousStatement": true, "nextStatement": true },
+      { "id": "hash-return", "type": "hash_return", "label": "RETURN the hash as a hex string", "color": "#00d4ff", "previousStatement": true }
+    ],
+    "correctBlockOrder": ["hash-start", "hash-init", "hash-loop", "hash-code", "hash-mix", "hash-clamp", "hash-return"],
+    "hints": ["Start with the input and initialize the hash", "Process each character one by one", "Mix the character value into the running hash"]
+  },
+  {
+    "id": "lab-hash-l2",
+    "labId": "lab-hash",
+    "level": 2,
+    "title": "Hash Function — Blocks + Code View",
+    "description": "Watch how hashing blocks translate to bitwise operations.",
+    "narrative": "See the bit-shifting magic behind hash functions. Each block maps to bitwise operations in code.",
+    "category": "crypto",
+    "rewardXP": 100,
+    "blocks": [
+      { "id": "hash-start", "type": "hash_start", "label": "START with the input string", "color": "#00d4ff", "nextStatement": true },
+      { "id": "hash-init", "type": "hash_init", "label": "SET hash value to 0", "color": "#a855f7", "previousStatement": true, "nextStatement": true },
+      { "id": "hash-loop", "type": "hash_loop", "label": "FOR EACH character in the string", "color": "#22c55e", "previousStatement": true, "nextStatement": true },
+      { "id": "hash-code", "type": "hash_code", "label": "GET the character's numeric code", "color": "#eab308", "previousStatement": true, "nextStatement": true },
+      { "id": "hash-mix", "type": "hash_mix", "label": "MIX the code into the hash (shift and add)", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "hash-clamp", "type": "hash_clamp", "label": "KEEP hash as a 32-bit number", "color": "#a855f7", "previousStatement": true, "nextStatement": true },
+      { "id": "hash-return", "type": "hash_return", "label": "RETURN the hash as a hex string", "color": "#00d4ff", "previousStatement": true }
+    ],
+    "correctBlockOrder": ["hash-start", "hash-init", "hash-loop", "hash-code", "hash-mix", "hash-clamp", "hash-return"],
+    "hints": ["The << operator shifts bits to the left", "hash & hash converts to 32-bit integer", "toString(16) converts a number to hexadecimal"]
+  },
+  {
+    "id": "lab-hash-l3",
+    "labId": "lab-hash",
+    "level": 3,
+    "title": "Hash Function — Fill in the Blanks",
+    "description": "Complete the hash function by filling in the bitwise operations.",
+    "narrative": "Fill in the missing bitwise operations to complete the hash function.",
+    "category": "crypto",
+    "rewardXP": 125,
+    "blankTemplate": "function simpleHash(input) {\n  let hash = ___BLANK_0___;\n  for (let i = 0; i < input.length; i++) {\n    const char = input.___BLANK_1___;\n    hash = ((hash ___BLANK_2___) - hash) + char;\n    hash = hash & hash;\n  }\n  return Math.abs(hash).toString(___BLANK_3___).padStart(8, '0');\n}",
+    "blanks": [
+      { "id": 0, "answer": "0", "hint": "Initial value of the hash" },
+      { "id": 1, "answer": "charCodeAt(i)", "hint": "Method to get ASCII code at position i" },
+      { "id": 2, "answer": "<< 5", "hint": "Bit shift left by 5 positions (multiplies by 32)" },
+      { "id": 3, "answer": "16", "hint": "Base for hexadecimal output" }
+    ],
+    "hints": ["Hash starts at zero", "charCodeAt gives you the numeric value of each character", "<< is the left bit shift operator, toString(16) converts to hex"]
+  },
+  {
+    "id": "lab-hash-l4",
+    "labId": "lab-hash",
+    "level": 4,
+    "title": "Hash Function — Full Code",
+    "description": "Write the complete hash function from scratch.",
+    "narrative": "Implement the full hash function. Convert any string to a unique 8-character hex fingerprint.",
+    "category": "crypto",
+    "rewardXP": 150,
+    "starterCode": "function simpleHash(input) {\n  // Create a numeric hash from the string\n  // Each character contributes to the hash\n  // Return as 8-char hex string\n  return '00000000';\n}",
+    "solution": "function simpleHash(input) {\n  let hash = 0;\n  for (let i = 0; i < input.length; i++) {\n    const char = input.charCodeAt(i);\n    hash = ((hash << 5) - hash) + char;\n    hash = hash & hash;\n  }\n  return Math.abs(hash).toString(16).padStart(8, '0');\n}",
+    "testCases": [
+      { "input": "hello", "expectedOutput": "0", "description": "Hash of 'hello' (any non-zero hex)" },
+      { "input": "Hello", "expectedOutput": "0", "description": "Different case = different hash" },
+      { "input": "", "expectedOutput": "00000000", "description": "Empty string hashes to zero" }
+    ],
+    "hints": ["Use charCodeAt() to get numeric values", "Bit shifting (<<) helps distribute values", "Use bitwise AND to keep the number as 32-bit integer"]
+  },
+
+  {
+    "id": "lab-pw-hero-l1",
+    "labId": "lab-pw-hero",
+    "level": 1,
+    "title": "Password Power Hero — Build the Shield",
+    "description": "Help ByteBoy build the first layer of the Password Shield by checking password length.",
+    "narrative": "ByteBoy here! Our users are creating tiny passwords like 'abc' — we need a shield! Arrange these blocks to check if a password is long enough. Weak passwords crack the shield, strong ones make it glow!",
+    "category": "logic",
+    "rewardXP": 75,
+    "blocks": [
+      { "id": "hero-start", "type": "hero_start", "label": "WHEN user creates a password", "color": "#00d4ff", "nextStatement": true },
+      { "id": "hero-get-pw", "type": "hero_get_pw", "label": "GET the password text", "color": "#a855f7", "previousStatement": true, "nextStatement": true },
+      { "id": "hero-check-len", "type": "hero_check_len", "label": "CHECK password length", "color": "#22c55e", "previousStatement": true, "nextStatement": true },
+      { "id": "hero-if-short", "type": "hero_if_short", "label": "IF length < 8 characters", "color": "#eab308", "previousStatement": true, "nextStatement": true, "fields": [{ "name": "minLength", "type": "number", "default": 8 }] },
+      { "id": "hero-warn-weak", "type": "hero_warn_weak", "label": "SHOW weak warning (shield cracks!)", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "hero-else-strong", "type": "hero_else_strong", "label": "ELSE password is long enough", "color": "#22c55e", "previousStatement": true, "nextStatement": true },
+      { "id": "hero-show-shield", "type": "hero_show_shield", "label": "SHOW strong shield (glowing!)", "color": "#00d4ff", "previousStatement": true }
+    ],
+    "correctBlockOrder": ["hero-start", "hero-get-pw", "hero-check-len", "hero-if-short", "hero-warn-weak", "hero-else-strong", "hero-show-shield"],
+    "hints": ["First, ByteBoy needs to receive the password", "Check the length before deciding strong or weak", "Short passwords crack the shield, long ones make it glow"]
+  },
+  {
+    "id": "lab-pw-hero-l2",
+    "labId": "lab-pw-hero",
+    "level": 2,
+    "title": "Password Power Hero — Add Power Boost",
+    "description": "Add more power checks: numbers and capital letters make the shield stronger!",
+    "narrative": "Good work! But length alone isn't enough. ByteBoy needs to check for numbers AND capital letters. Watch the code appear as you add more power checks to the shield!",
+    "category": "logic",
+    "rewardXP": 100,
+    "blocks": [
+      { "id": "hero2-start", "type": "hero2_start", "label": "WHEN user creates a password", "color": "#00d4ff", "nextStatement": true },
+      { "id": "hero2-score", "type": "hero2_score", "label": "SET power level to 0", "color": "#a855f7", "previousStatement": true, "nextStatement": true },
+      { "id": "hero2-check-len", "type": "hero2_check_len", "label": "CHECK if length >= 8 (add power!)", "color": "#22c55e", "previousStatement": true, "nextStatement": true },
+      { "id": "hero2-check-upper", "type": "hero2_check_upper", "label": "CHECK if password has CAPITAL letter", "color": "#eab308", "previousStatement": true, "nextStatement": true },
+      { "id": "hero2-check-num", "type": "hero2_check_num", "label": "CHECK if password has a NUMBER", "color": "#eab308", "previousStatement": true, "nextStatement": true },
+      { "id": "hero2-check-special", "type": "hero2_check_special", "label": "CHECK if password has SPECIAL character (!@#$)", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "hero2-if-missing", "type": "hero2_if_missing", "label": "IF any check missing → shield flickers", "color": "#ef4444", "previousStatement": true, "nextStatement": true },
+      { "id": "hero2-else-charged", "type": "hero2_else_charged", "label": "ELSE activate POWER SHIELD (lightning!)", "color": "#00d4ff", "previousStatement": true }
+    ],
+    "correctBlockOrder": ["hero2-start", "hero2-score", "hero2-check-len", "hero2-check-upper", "hero2-check-num", "hero2-check-special", "hero2-if-missing", "hero2-else-charged"],
+    "hints": ["Initialize the power level before checking", "Each passing check adds power to the shield", "Watch the code panel — each block becomes an if-statement with regex"]
+  },
+  {
+    "id": "lab-pw-hero-l3",
+    "labId": "lab-pw-hero",
+    "level": 3,
+    "title": "Password Power Hero — Smart Defender Mode",
+    "description": "Fill in the code to build ByteBoy's scoring system. Score >= 3 means the shield is at full power!",
+    "narrative": "ByteBoy's final training! Fill in the blanks to build the scoring system. COUNT how many rules pass, then decide: is the shield strong enough to allow login? The power meter fills as you get blanks right!",
+    "category": "logic",
+    "rewardXP": 125,
+    "blankTemplate": "function passwordPowerCheck(password) {\n  let score = ___BLANK_0___;\n  if (password.length >= 8) ___BLANK_1___;\n  if (___BLANK_2___.test(password)) score++;\n  if (/[0-9]/.test(password)) score++;\n  if (/[^A-Za-z0-9]/.test(password)) score++;\n  if (score >= ___BLANK_3___) {\n    return { score, label: 'strong' };\n  } else {\n    return { score, label: 'weak' };\n  }\n}",
+    "blanks": [
+      { "id": 0, "answer": "0", "hint": "Starting power level for the shield" },
+      { "id": 1, "answer": "score++", "hint": "Increase the score by 1 when the check passes" },
+      { "id": 2, "answer": "/[A-Z]/", "hint": "Regex pattern that matches uppercase letters" },
+      { "id": 3, "answer": "3", "hint": "Minimum score to activate the power shield" }
+    ],
+    "hints": ["Score starts at zero and grows with each passing check", "score++ adds 1 to the score", "3 out of 4 rules is enough for a strong password"]
+  },
+  {
+    "id": "lab-pw-hero-l4",
+    "labId": "lab-pw-hero",
+    "level": 4,
+    "title": "Password Power Hero — Full Code",
+    "description": "Write the complete Password Power Check from scratch. ByteBoy is counting on you!",
+    "narrative": "This is it, Agent! ByteBoy needs you to write the entire Password Power Shield from scratch. Check length, uppercase, numbers, and special characters. Return a score and label. The network's safety is in your hands!",
+    "category": "logic",
+    "rewardXP": 150,
+    "starterCode": "function passwordPowerCheck(password) {\n  let score = 0;\n  // Check length >= 8\n  // Check for uppercase letter\n  // Check for number\n  // Check for special character\n  // Return { score, label } where label is 'strong' (>=3) or 'weak'\n  return { score, label: 'weak' };\n}",
+    "solution": "function passwordPowerCheck(password) {\n  let score = 0;\n  if (password.length >= 8) score++;\n  if (/[A-Z]/.test(password)) score++;\n  if (/[0-9]/.test(password)) score++;\n  if (/[^A-Za-z0-9]/.test(password)) score++;\n  const label = score >= 3 ? 'strong' : 'weak';\n  return { score, label };\n}",
+    "testCases": [
+      { "input": "abc", "expectedOutput": "weak", "description": "Short password → weak" },
+      { "input": "Abcdefgh1", "expectedOutput": "strong", "description": "Length + upper + number → strong" },
+      { "input": "Str0ng!Pass", "expectedOutput": "strong", "description": "All rules pass → strong" },
+      { "input": "longpassword", "expectedOutput": "weak", "description": "Only length → weak" }
+    ],
+    "hints": ["Check password length first", "Use regex like /[A-Z]/ to test for uppercase", "Count how many rules pass to determine strength"]
+  }
+]

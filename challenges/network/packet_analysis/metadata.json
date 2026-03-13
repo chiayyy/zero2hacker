@@ -1,0 +1,32 @@
+{
+  "title": "Network Packet Analysis",
+  "description": "Analyze this network capture file to find the hidden flag. The flag was transmitted over the network in an insecure manner.",
+  "short_description": "Network forensics and packet analysis",
+  "category": "network-security",
+  "difficulty": "medium",
+  "points": 75,
+  "estimated_time": 45,
+  "flag": "flag{network_forensics_master}",
+  "hints": [
+    "Use Wireshark or similar tools to analyze the PCAP file",
+    "Look for suspicious HTTP traffic and examine headers carefully",
+    "Check for base64 encoded data in unusual places",
+    "FTP commands might contain interesting information",
+    "The flag might be hidden in plain sight within the protocol data"
+  ],
+  "tags": ["network", "forensics", "pcap", "wireshark", "http", "base64"],
+  "learning_objectives": [
+    "Learn network packet analysis techniques",
+    "Understand common network protocols (HTTP, FTP, DNS)",
+    "Practice using Wireshark and other network analysis tools",
+    "Develop skills in network forensics",
+    "Learn to identify data exfiltration techniques"
+  ],
+  "files": [
+    "network_capture.pcap",
+    "create_challenge.py",
+    "analysis_guide.txt"
+  ],
+  "solution": "Analyze HTTP traffic in the PCAP file to find base64 encoded flag in User-Agent header or FTP filename",
+  "writeup": "Network packet analysis is a crucial skill in cybersecurity. This challenge demonstrates how sensitive data can be hidden in seemingly normal network traffic. The flag is encoded in base64 and hidden in HTTP headers, showing how attackers might exfiltrate data. Tools like Wireshark are essential for analyzing network captures and identifying suspicious activities."
+}

@@ -1,0 +1,5 @@
+A suspicious file was recovered from a compromised system.
+
+Your job is to analyze it and recover any hidden secrets.
+
+A file has been given a wrong extension to hide its true type. Identify the real format and extract the flag within.

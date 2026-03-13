@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Zero2Hacker{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="text-white mb-4">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </h2>
+    </div>
+</div>
+
+<!-- Premium Stats Cards - Ultra Large -->
+<div class="row mb-5">
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card stats-card h-100 premium-stat-card">
+            <div class="card-body text-center py-5">
+                <div class="stat-icon-container mb-3">
+                    <i class="fas fa-trophy fa-3x text-warning"></i>
+                    <div class="icon-glow trophy-glow"></div>
+                </div>
+                <h1 class="display-4 fw-bold text-warning mb-2" style="font-size: 2.5rem;">{{ user.total_points }}</h1>
+                <h5 class="text-light fw-bold text-uppercase tracking-wide">Total Points</h5>
+                <div class="stat-decoration"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card stats-card h-100 premium-stat-card">
+            <div class="card-body text-center py-5">
+                <div class="stat-icon-container mb-3">
+                    <i class="fas fa-level-up-alt fa-3x text-info"></i>
+                    <div class="icon-glow level-glow"></div>
+                </div>
+                <h1 class="display-4 fw-bold text-info mb-2" style="font-size: 2.5rem;">{{ user.level }}</h1>
+                <h5 class="text-light fw-bold text-uppercase tracking-wide">Current Level</h5>
+                <div class="stat-decoration"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card stats-card h-100 premium-stat-card">
+            <div class="card-body text-center py-5">
+                <div class="stat-icon-container mb-3">
+                    <i class="fas fa-check-circle fa-3x text-success"></i>
+                    <div class="icon-glow success-glow"></div>
+                </div>
+                <h1 class="display-4 fw-bold text-success mb-2" style="font-size: 2.5rem;">{{ solved_count }}</h1>
+                <h5 class="text-light fw-bold text-uppercase tracking-wide">Challenges Solved</h5>
+                <div class="stat-decoration"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card stats-card h-100 premium-stat-card">
+            <div class="card-body text-center py-5">
+                <div class="stat-icon-container mb-3">
+                    <i class="fas fa-fire fa-3x text-danger"></i>
+                    <div class="icon-glow fire-glow"></div>
+                </div>
+                <h1 class="display-4 fw-bold text-danger mb-2" style="font-size: 2.5rem;">{{ user.streak_days }}</h1>
+                <h5 class="text-light fw-bold text-uppercase tracking-wide">Day Streak</h5>
+                <div class="stat-decoration"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Recent Achievements -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-star"></i> Recent Achievements</h5>
+            </div>
+            <div class="card-body">
+                {% if solved_challenges %}
+                    {% for challenge in solved_challenges %}
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+                        <div>
+                            <h5 class="text-light fw-bold mb-1">{{ challenge.title }}</h5>
+                            <p class="text-light opacity-75 mb-0">{{ challenge.created_at }}</p>
+                        </div>
+                        <span class="badge bg-success fs-5 px-3 py-2">+{{ challenge.points }} pts</span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-light fs-4">No challenges solved yet. <a href="/challenges" class="text-primary fw-bold">Start solving challenges!</a></p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Progress Overview -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5><i class="fas fa-chart-line"></i> Progress Overview</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h4 class="text-light mb-3 fw-bold">Challenges Completed</h4>
+                        <div class="progress mb-4 premium-progress">
+                            <div class="progress-bar bg-gradient progress-bar-striped progress-bar-animated premium-progress-bar"
+                                 role="progressbar"
+                                 style="width: {{ (solved_count / total_challenges * 100) if total_challenges > 0 else 0 }}%;
+                                        background: linear-gradient(45deg, var(--primary-cyan), var(--primary-purple)) !important;">
+                                <span class="fw-bold text-dark">{{ solved_count }}/{{ total_challenges }} Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <h4 class="text-light mb-3 fw-bold">Current Skill Level</h4>
+                        <div class="skill-level-container">
+                            <span class="badge bg-primary premium-skill-badge">{{ user.skill_level.title() }}</span>
+                            <div class="skill-glow"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <h4 class="text-light mb-3 fw-bold">Next Level Progress</h4>
+                    <div class="progress premium-progress premium-level-progress">
+                        {% set progress = (user.total_points % 100) %}
+                        <div class="progress-bar bg-gradient progress-bar-striped premium-progress-bar"
+                             role="progressbar"
+                             style="width: {{ progress }}%;
+                                    background: linear-gradient(45deg, var(--primary-pink), var(--primary-cyan)) !important;">
+                            <span class="fw-bold text-dark">{{ progress }}/100 XP to Level {{ user.level + 1 }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Preview -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-trophy"></i> Top Performers</h5>
+            </div>
+            <div class="card-body">
+                {% for leader in leaderboard[:5] %}
+                <div class="d-flex justify-content-between align-items-center mb-3 py-2">
+                    <div>
+                        <span class="badge bg-{{ 'warning' if loop.index0 == 0 else 'secondary' }} fs-6 px-3 py-2 me-2">
+                            #{{ loop.index }}
+                        </span>
+                        <strong class="text-light fs-5">{{ leader.username }}</strong>
+                        <br>
+                        <span class="text-light opacity-75 fs-6">Level {{ leader.level }}</span>
+                    </div>
+                    <span class="text-primary fs-5 fw-bold">{{ leader.total_points }} pts</span>
+                </div>
+                {% endfor %}
+                <div class="text-center mt-4">
+                    <a href="/leaderboard" class="btn btn-outline-primary fs-5 px-4 py-2">View Full Leaderboard</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5><i class="fas fa-zap"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-4">
+                    <a href="/challenges" class="btn btn-primary premium-action-btn">
+                        <i class="fas fa-puzzle-piece me-3"></i> BROWSE CHALLENGES
+                    </a>
+                    <a href="/ai-challenge" class="btn btn-outline-success premium-action-btn">
+                        <i class="fas fa-robot me-3"></i> AI CHALLENGE GENERATOR
+                    </a>
+                    <a href="/challenge/1" class="btn btn-outline-primary premium-action-btn">
+                        <i class="fas fa-play me-3"></i> TRY FIRST CHALLENGE
+                    </a>
+                    <button class="btn btn-outline-info premium-action-btn" onclick="getRandomTip()">
+                        <i class="fas fa-lightbulb me-3"></i> GET LEARNING TIP
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function getRandomTip() {
+    const tips = [
+        "💡 Always read challenge descriptions carefully for hidden clues!",
+        "🔍 Use browser developer tools to inspect web challenges.",
+        "📚 Learn about different cipher types for crypto challenges.",
+        "🛡️ Understanding SQL injection is crucial for web security.",
+        "🎯 Start with beginner challenges to build your foundation.",
+        "🤝 Don't hesitate to ask for hints when you're stuck!",
+        "⚡ Practice regularly to maintain your learning streak.",
+        "🏆 Challenge yourself with harder problems as you improve."
+    ];
+
+    const randomTip = tips[Math.floor(Math.random() * tips.length)];
+    alert(randomTip);
+}
+
+// Auto-refresh stats every 30 seconds
+setInterval(function() {
+    fetch('/api/stats')
+        .then(response => response.json())
+        .then(data => {
+            // Update any dynamic stats if needed
+            console.log('Stats updated:', data);
+        })
+        .catch(error => console.log('Error updating stats:', error));
+}, 30000);
+</script>
+{% endblock %}

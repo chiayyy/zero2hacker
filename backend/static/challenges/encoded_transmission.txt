@@ -1,0 +1,15 @@
+TOP SECRET TRANSMISSION
+=======================
+Classification: ULTRA
+Date: [REDACTED]
+From: [REDACTED]
+To: [REDACTED]
+
+The following message has been encoded for security.
+It has been processed through 5 layers of encoding.
+
+BEGIN ENCODED MESSAGE:
+VmxjeE1FNUdSbk5UV0hCclVqTlNhRlpxUVRGTmJHUnlXa1prWVdKSGVGbGFWV2hQVjFVeGRXRkhPV0ZXYlZKWVdsWmtUbVZyTVVWTlJEQTk=
+END ENCODED MESSAGE
+
+Decode all layers to reveal the secret.

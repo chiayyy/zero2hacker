@@ -1,0 +1,15 @@
+User-agent: *
+Disallow: /admin
+Disallow: /api
+Disallow: /.env
+Disallow: /config
+
+# -----------------------------------------------
+# Still reading? Nice.
+# Real hackers check robots.txt first.
+#
+# Secret flag (don't tell anyone):
+#     FLAG{r0b0ts_txt_r34d3r_1337}
+#
+# Your real reward: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+# -----------------------------------------------

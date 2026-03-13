@@ -1,0 +1,21 @@
+===============================================
+       BASE64 ENCODING CHALLENGE
+===============================================
+
+Base64 is used everywhere in computing!
+It's an encoding scheme - NOT encryption.
+
+Your task: Decode this Base64 string to find the flag.
+
+ENCODED MESSAGE:
+-------------------
+RkxBR3tiYXNlNjRfZGVjb2Rpbmdfcm9ja3N9
+-------------------
+
+TOOLS YOU CAN USE:
+- Online: base64decode.org
+- Linux/Mac: echo "string" | base64 -d
+- Python: import base64; print(base64.b64decode("string").decode())
+- Windows PowerShell: [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("string"))
+
+===============================================

@@ -1,0 +1,30 @@
+{
+  "title": "Hidden Message",
+  "description": "There's a secret message hidden in this image using LSB steganography. Can you extract the hidden flag?",
+  "short_description": "Basic steganography challenge",
+  "category": "steganography",
+  "difficulty": "easy",
+  "points": 40,
+  "estimated_time": 20,
+  "flag": "flag{hidden_in_plain_sight}",
+  "hints": [
+    "The message is hidden in the least significant bits (LSB) of the image",
+    "Use steganography tools like steghide, stegsolve, or write your own script",
+    "Check the LSB of RGB channels",
+    "Look for tools that can extract hidden data from images"
+  ],
+  "tags": ["steganography", "lsb", "image", "hidden-data"],
+  "learning_objectives": [
+    "Understand steganography concepts",
+    "Learn about LSB (Least Significant Bit) hiding",
+    "Practice using steganography tools",
+    "Understand digital forensics techniques"
+  ],
+  "files": [
+    "challenge_image.png",
+    "create_challenge.py",
+    "extract_solution.py"
+  ],
+  "solution": "Extract the LSB from RGB channels of the image to reveal the hidden message",
+  "writeup": "LSB steganography hides data by modifying the least significant bit of each color channel in an image. Since changing the LSB causes minimal visual difference, the hidden data is virtually undetectable to the human eye. The message can be extracted by reading the LSB values and converting them back to text."
+}

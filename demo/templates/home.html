@@ -1,0 +1,681 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section with Animated Background -->
+<div class="hero-section">
+    <div class="row">
+        <div class="col-lg-8 mx-auto text-center text-white">
+            <div class="hero-content">
+                <h1 class="display-4 mb-4 hero-title">
+                    <i class="fas fa-shield-alt rotating-icon"></i> Zero2Hacker
+                </h1>
+                <div class="hero-subtitle">
+                    <p class="lead mb-4 typewriter">
+                        Democratizing Cybersecurity Education Through AI-Personalized CTF Challenges
+                    </p>
+                </div>
+                <p class="mb-5 fade-in-text">
+                    Learn cybersecurity through hands-on challenges that adapt to your skill level.
+                    Solve puzzles, earn points, and master the art of ethical hacking!
+                </p>
+
+                <!-- Feature Cards with Enhanced Animations -->
+                <div class="row mb-5 feature-cards">
+                    <div class="col-md-4">
+                        <div class="card text-white futuristic-card floating-card" data-tilt>
+                            <div class="card-body">
+                                <div class="icon-container">
+                                    <i class="fas fa-puzzle-piece fa-3x mb-3 hover-icon"></i>
+                                    <div class="icon-glow"></div>
+                                </div>
+                                <h5 class="card-title">Interactive Challenges</h5>
+                                <p class="card-text">Solve real-world cybersecurity challenges across multiple categories</p>
+                                <div class="card-stats">
+                                    <span class="stat-number" data-count="4">0</span>
+                                    <span class="stat-label">Challenges Available</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-white futuristic-card floating-card" data-tilt>
+                            <div class="card-body">
+                                <div class="icon-container">
+                                    <i class="fas fa-trophy fa-3x mb-3 hover-icon"></i>
+                                    <div class="icon-glow"></div>
+                                </div>
+                                <h5 class="card-title">Gamification</h5>
+                                <p class="card-text">Earn points, level up, and compete with other learners</p>
+                                <div class="card-stats">
+                                    <span class="stat-number" data-count="100">0</span>
+                                    <span class="stat-label">Max Points</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-white futuristic-card floating-card" data-tilt>
+                            <div class="card-body">
+                                <div class="icon-container">
+                                    <i class="fas fa-brain fa-3x mb-3 hover-icon"></i>
+                                    <div class="icon-glow"></div>
+                                </div>
+                                <h5 class="card-title">AI-Powered Learning</h5>
+                                <p class="card-text">Get personalized hints and adaptive difficulty based on your progress</p>
+                                <div class="card-stats">
+                                    <span class="stat-number" data-count="24">0</span>
+                                    <span class="stat-label">7 Support</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Buttons with Enhanced Effects -->
+                <div class="mb-4 cta-section">
+                    <a href="/register" class="btn btn-primary btn-lg me-3 pulse-btn">
+                        <i class="fas fa-rocket"></i>
+                        <span>Start Learning</span>
+                        <div class="btn-particles"></div>
+                    </a>
+                    <a href="/login" class="btn btn-outline-light btn-lg glow-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Sign In</span>
+                    </a>
+                </div>
+
+                <!-- Demo Info with Futuristic Styling -->
+                <div class="alert alert-info cyber-alert">
+                    <div class="alert-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="alert-content">
+                        <strong>Demo Version:</strong> This is a demonstration of the Zero2Hacker platform.
+                        <br>Try logging in with username: <code class="demo-code">admin</code> and password: <code class="demo-code">admin123</code>
+                    </div>
+                    <div class="alert-decoration"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Challenge Categories Section -->
+<div class="row mt-5">
+    <div class="col-md-12">
+        <div class="card categories-card">
+            <div class="card-body">
+                <h3 class="text-center mb-4 section-title">
+                    <span class="title-decoration"></span>
+                    Challenge Categories
+                    <span class="title-decoration"></span>
+                </h3>
+                <div class="row categories-grid">
+                    <div class="col-md-3 text-center category-item">
+                        <div class="category-icon-wrapper">
+                            <i class="fas fa-key fa-3x category-icon crypto-icon"></i>
+                            <div class="icon-ring"></div>
+                            <div class="icon-pulse"></div>
+                        </div>
+                        <h6 class="category-title">Cryptography</h6>
+                        <small class="category-desc">Encryption, decryption, and cipher challenges</small>
+                        <div class="category-progress">
+                            <div class="progress-bar" data-progress="75"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-center category-item">
+                        <div class="category-icon-wrapper">
+                            <i class="fas fa-globe fa-3x category-icon web-icon"></i>
+                            <div class="icon-ring"></div>
+                            <div class="icon-pulse"></div>
+                        </div>
+                        <h6 class="category-title">Web Security</h6>
+                        <small class="category-desc">SQL injection, XSS, and web vulnerabilities</small>
+                        <div class="category-progress">
+                            <div class="progress-bar" data-progress="60"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-center category-item">
+                        <div class="category-icon-wrapper">
+                            <i class="fas fa-eye-slash fa-3x category-icon stego-icon"></i>
+                            <div class="icon-ring"></div>
+                            <div class="icon-pulse"></div>
+                        </div>
+                        <h6 class="category-title">Steganography</h6>
+                        <small class="category-desc">Hidden messages and data extraction</small>
+                        <div class="category-progress">
+                            <div class="progress-bar" data-progress="45"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-center category-item">
+                        <div class="category-icon-wrapper">
+                            <i class="fas fa-network-wired fa-3x category-icon network-icon"></i>
+                            <div class="icon-ring"></div>
+                            <div class="icon-pulse"></div>
+                        </div>
+                        <h6 class="category-title">Network Security</h6>
+                        <small class="category-desc">Packet analysis and network forensics</small>
+                        <div class="category-progress">
+                            <div class="progress-bar" data-progress="30"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Matrix Rain Effect -->
+<canvas id="matrix-canvas"></canvas>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    // Counter animation for stats
+    function animateCounter(element) {
+        const target = parseInt(element.data('count'));
+        const duration = 2000;
+        const step = target / (duration / 50);
+        let current = 0;
+
+        const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            element.text(Math.floor(current));
+        }, 50);
+    }
+
+    // Trigger counters when cards are visible
+    $('.stat-number').each(function() {
+        const $this = $(this);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter($this);
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+        observer.observe(this);
+    });
+
+    // Typewriter effect
+    function typeWriter(element, text, speed = 50) {
+        let i = 0;
+        element.innerHTML = '';
+        function type() {
+            if (i < text.length) {
+                element.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(type, speed);
+            }
+        }
+        type();
+    }
+
+    // Initialize typewriter
+    const typewriterElement = document.querySelector('.typewriter');
+    if (typewriterElement) {
+        const originalText = typewriterElement.textContent;
+        setTimeout(() => {
+            typeWriter(typewriterElement, originalText, 30);
+        }, 1000);
+    }
+
+    // 3D tilt effect for cards
+    $('.floating-card[data-tilt]').on('mousemove', function(e) {
+        const card = $(this);
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = (y - centerY) / 10;
+        const rotateY = -(x - centerX) / 10;
+
+        card.css('transform', `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`);
+    }).on('mouseleave', function() {
+        $(this).css('transform', 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)');
+    });
+
+    // Progress bar animation
+    $('.progress-bar').each(function() {
+        const $this = $(this);
+        const progress = $this.data('progress');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        $this.css('width', progress + '%');
+                    }, Math.random() * 1000);
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+        observer.observe(this);
+    });
+
+    // Matrix rain effect
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const characters = '01ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ';
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = new Array(Math.floor(columns)).fill(1);
+
+    function drawMatrix() {
+        ctx.fillStyle = 'rgba(10, 10, 15, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#00ffff';
+        ctx.font = fontSize + 'px monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = characters[Math.floor(Math.random() * characters.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+
+    setInterval(drawMatrix, 50);
+
+    // Window resize handler for matrix
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
+    // Particle effect for buttons
+    $('.pulse-btn').on('click', function(e) {
+        const btn = $(this);
+        const particles = btn.find('.btn-particles');
+
+        // Create particle burst effect
+        for (let i = 0; i < 20; i++) {
+            const particle = $('<div class="particle"></div>');
+            particles.append(particle);
+
+            const angle = (i / 20) * Math.PI * 2;
+            const velocity = 100 + Math.random() * 50;
+            const x = Math.cos(angle) * velocity;
+            const y = Math.sin(angle) * velocity;
+
+            particle.css({
+                'position': 'absolute',
+                'width': '4px',
+                'height': '4px',
+                'background': '#00ffff',
+                'border-radius': '50%',
+                'top': '50%',
+                'left': '50%',
+                'transform': `translate(-50%, -50%)`,
+                'pointer-events': 'none'
+            });
+
+            particle.animate({
+                'margin-left': x + 'px',
+                'margin-top': y + 'px',
+                'opacity': 0
+            }, 1000, function() {
+                particle.remove();
+            });
+        }
+    });
+});
+</script>
+
+<style>
+/* Additional styles for enhanced home page */
+.hero-section {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-title {
+    position: relative;
+    overflow: hidden;
+}
+
+.rotating-icon {
+    animation: rotate 4s linear infinite;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.typewriter {
+    border-right: 2px solid var(--primary-cyan);
+    animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+    50% { border-color: transparent; }
+}
+
+.fade-in-text {
+    animation: fadeInUp 1s ease-out 2s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.floating-card {
+    animation: float 6s ease-in-out infinite;
+}
+
+.floating-card:nth-child(2) {
+    animation-delay: -2s;
+}
+
+.floating-card:nth-child(3) {
+    animation-delay: -4s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.futuristic-card {
+    background: linear-gradient(145deg, rgba(15, 15, 35, 0.9), rgba(25, 25, 55, 0.9));
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.icon-container {
+    position: relative;
+    display: inline-block;
+}
+
+.icon-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, rgba(0, 255, 255, 0.2), transparent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+}
+
+.hover-icon:hover {
+    transform: scale(1.1) rotate(5deg);
+    text-shadow: 0 0 20px currentColor;
+}
+
+.card-stats {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.stat-number {
+    display: block;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--primary-cyan);
+    text-shadow: var(--glow-cyan);
+}
+
+.stat-label {
+    font-size: 0.8em;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.pulse-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.pulse-btn:hover {
+    animation: pulse-button 0.5s ease-in-out;
+}
+
+@keyframes pulse-button {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.btn-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.glow-btn:hover {
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+
+.cyber-alert {
+    background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(139, 92, 246, 0.1));
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.alert-icon {
+    float: left;
+    margin-right: 10px;
+    font-size: 1.2em;
+    color: var(--primary-cyan);
+}
+
+.alert-content {
+    position: relative;
+    z-index: 2;
+}
+
+.demo-code {
+    background: rgba(0, 255, 255, 0.2);
+    color: var(--primary-cyan);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    text-shadow: var(--glow-cyan);
+}
+
+.alert-decoration {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1));
+    animation: sweep 3s ease-in-out infinite;
+}
+
+@keyframes sweep {
+    0% { transform: translateX(-100px); }
+    50% { transform: translateX(0); }
+    100% { transform: translateX(100px); }
+}
+
+.categories-card {
+    position: relative;
+}
+
+.section-title {
+    color: white;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.title-decoration {
+    display: inline-block;
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary-cyan), var(--primary-purple));
+    margin: 0 20px;
+    vertical-align: middle;
+}
+
+.categories-grid {
+    margin-top: 30px;
+}
+
+.category-item {
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+.category-item:hover {
+    transform: translateY(-10px);
+}
+
+.category-icon-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.icon-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80px;
+    height: 80px;
+    border: 2px solid transparent;
+    border-top: 2px solid var(--primary-cyan);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: spin 3s linear infinite;
+}
+
+.icon-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, rgba(0, 255, 255, 0.1), transparent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse-ring 2s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0; }
+}
+
+.crypto-icon { color: var(--primary-cyan); }
+.web-icon { color: var(--primary-purple); }
+.stego-icon { color: var(--primary-pink); }
+.network-icon { color: #10b981; }
+
+.category-title {
+    color: white;
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-family: 'Orbitron', monospace;
+}
+
+.category-desc {
+    color: rgba(255, 255, 255, 0.7);
+    display: block;
+    margin-bottom: 15px;
+}
+
+.category-progress {
+    width: 80%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-cyan), var(--primary-purple));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 2s ease-in-out;
+    position: relative;
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: progress-shine 2s ease-in-out infinite;
+}
+
+@keyframes progress-shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+#matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+.particle {
+    box-shadow: 0 0 6px currentColor;
+}
+</style>
+{% endblock %}

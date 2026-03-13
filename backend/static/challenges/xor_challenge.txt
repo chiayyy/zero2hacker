@@ -1,0 +1,35 @@
+===============================================
+         XOR CIPHER CHALLENGE
+===============================================
+
+XOR (Exclusive OR) is a fundamental operation in cryptography.
+
+Key property: A XOR B XOR B = A
+This means XOR encryption can be reversed with the same key!
+
+CHALLENGE:
+The following hex string contains a message XOR'd with a single byte key.
+Find the key and decrypt the message.
+
+ENCRYPTED (HEX):
+-------------------
+6c666b6d515245587543597553455f58754c58434f444e57
+-------------------
+
+APPROACH:
+1. Convert hex to bytes
+2. Try XOR with all possible single-byte keys (0-255)
+3. Look for readable text containing "FLAG"
+
+PYTHON STARTER CODE:
+```python
+encrypted_hex = "6c666b6d515245587543597553455f58754c58434f444e57"
+encrypted_bytes = bytes.fromhex(encrypted_hex)
+
+for key in range(256):
+    decrypted = ''.join(chr(b ^ key) for b in encrypted_bytes)
+    if 'FLAG' in decrypted or decrypted.isprintable():
+        print(f"Key {key}: {decrypted}")
+```
+
+===============================================

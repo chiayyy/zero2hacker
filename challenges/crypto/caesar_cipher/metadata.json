@@ -1,0 +1,28 @@
+{
+  "title": "Caesar Cipher",
+  "description": "Decrypt this message that has been encoded with a Caesar cipher. The encrypted message is: synt{pynffvpny_pelcgb}",
+  "short_description": "Classical cryptography challenge",
+  "category": "cryptography",
+  "difficulty": "beginner",
+  "points": 25,
+  "estimated_time": 15,
+  "flag": "flag{classical_crypto}",
+  "hints": [
+    "This is a simple substitution cipher where each letter is shifted by a fixed number",
+    "Try different shift values (1-25)",
+    "The message should be readable English when decrypted correctly",
+    "ROT13 is a common Caesar cipher variant"
+  ],
+  "tags": ["classical", "substitution", "caesar", "rot13"],
+  "learning_objectives": [
+    "Understand classical cryptography principles",
+    "Learn about substitution ciphers",
+    "Practice frequency analysis",
+    "Recognize common cipher patterns"
+  ],
+  "files": [
+    "challenge.py"
+  ],
+  "solution": "Apply Caesar cipher decryption with shift value 13 to get flag{classical_crypto}",
+  "writeup": "Caesar cipher is one of the simplest encryption techniques. Each letter is shifted by a fixed number of positions in the alphabet. ROT13 is a special case where the shift is 13, making encryption and decryption the same operation."
+}
