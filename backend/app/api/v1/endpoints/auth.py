@@ -14,6 +14,11 @@ router = APIRouter()
 security = HTTPBearer()
 
 
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
+
+
 class RegisterRequest(BaseModel):
     email: EmailStr
     username: str
@@ -122,6 +127,22 @@ async def login_user(
         access_token=access_token,
         user=UserResponse.model_validate(user)
     )
+
+
+@router.post("/change-password")
+async def change_password(
+    data: ChangePasswordRequest,
+    current_user: UserModel = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Change current user's password"""
+    if not current_user.password_hash or not verify_password(data.current_password, current_user.password_hash):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Current password is incorrect")
+    if len(data.new_password) < 6:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="New password must be at least 6 characters")
+    current_user.password_hash = hash_password(data.new_password)
+    db.commit()
+    return {"message": "Password changed successfully"}
 
 
 @router.get("/me", response_model=UserResponse)

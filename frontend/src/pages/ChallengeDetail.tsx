@@ -5,6 +5,20 @@ import { challengeService } from '../services/api';
 import { Challenge, ChallengeAttempt } from '../types';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import { toast } from 'react-hot-toast';
+import {
+  TrophyIcon,
+  DocumentTextIcon,
+  FolderOpenIcon,
+  FlagIcon,
+  LightBulbIcon,
+  ChartBarIcon,
+  CalculatorIcon,
+  AcademicCapIcon,
+  UsersIcon,
+  ClockIcon,
+  StarIcon,
+  CheckCircleIcon,
+} from '@heroicons/react/24/outline';
 
 const ChallengeDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -38,7 +52,7 @@ const ChallengeDetail: React.FC = () => {
         clearInterval(timerRef.current);
       }
     };
-  }, [id]);
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Timer effect
   useEffect(() => {
@@ -112,12 +126,12 @@ const ChallengeDetail: React.FC = () => {
         setIsSolved(true);
         setIsTimerRunning(false);
         setEarnedPoints(result.points_earned);
-        toast.success(`🎉 Correct! You earned ${result.points_earned} points!`);
+        toast.success(`Correct! You earned ${result.points_earned} points!`);
         setFlagInput('');
         fetchChallenge();
         fetchUserAttempts();
       } else {
-        toast.error('❌ Incorrect flag. Try again!');
+        toast.error('Incorrect flag. Try again!');
         fetchUserAttempts();
       }
     } catch (error: any) {
@@ -141,7 +155,7 @@ const ChallengeDetail: React.FC = () => {
 
       setHints([...hints, result.hint]);
       setCurrentHintLevel(nextLevel);
-      toast.success('💡 Hint unlocked! (-15% points penalty)');
+      toast.success('Hint unlocked! (-15% points penalty)');
     } catch (error) {
       console.error('Error getting hint:', error);
       toast.error('Failed to get hint');
@@ -188,7 +202,7 @@ const ChallengeDetail: React.FC = () => {
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="text-4xl">🏆</div>
+              <TrophyIcon className="w-10 h-10 text-yellow-300" />
               <div>
                 <h3 className="text-xl font-bold">Challenge Completed!</h3>
                 <p className="text-green-100">Great job! You've solved this challenge.</p>
@@ -217,8 +231,8 @@ const ChallengeDetail: React.FC = () => {
             <span className="text-primary-600 dark:text-primary-400 font-semibold text-lg">
               {challenge.points} points
             </span>
-            <span>👥 {challenge.solve_count} solves</span>
-            {challenge.estimated_time && <span>⏱️ Est. {challenge.estimated_time} min</span>}
+            <span className="flex items-center gap-1"><UsersIcon className="w-4 h-4" />{challenge.solve_count} solves</span>
+            {challenge.estimated_time && <span className="flex items-center gap-1"><ClockIcon className="w-4 h-4" />Est. {challenge.estimated_time} min</span>}
           </div>
         </div>
       </div>
@@ -253,8 +267,8 @@ const ChallengeDetail: React.FC = () => {
         </div>
 
         {/* Status */}
-        <div className={`px-4 py-2 rounded-full font-semibold ${isSolved ? 'bg-green-600' : 'bg-yellow-600'}`}>
-          {isSolved ? '✓ Solved' : '⏳ In Progress'}
+        <div className={`px-4 py-2 rounded-full font-semibold flex items-center gap-2 ${isSolved ? 'bg-green-600' : 'bg-yellow-600'}`}>
+          {isSolved ? <><CheckCircleIcon className="w-4 h-4" /> Solved</> : <><ClockIcon className="w-4 h-4" /> In Progress</>}
         </div>
       </motion.div>
 
@@ -283,8 +297,8 @@ const ChallengeDetail: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-              📝 Description
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <DocumentTextIcon className="w-5 h-5 text-primary-500" /> Description
             </h2>
             <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">
               {challenge.description}
@@ -299,8 +313,8 @@ const ChallengeDetail: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.05 }}
             >
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                📁 Challenge Files
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <FolderOpenIcon className="w-5 h-5 text-blue-500" /> Challenge Files
               </h2>
               <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg">
                 <div className="flex items-center space-x-3">
@@ -316,7 +330,7 @@ const ChallengeDetail: React.FC = () => {
                   </div>
                 </div>
                 <a
-                  href={challenge.files_url?.startsWith('http') ? challenge.files_url : `http://localhost:8000${challenge.files_url}`}
+                  href={challenge.files_url?.startsWith('http') ? challenge.files_url : challenge.files_url}
                   download
                   target="_blank"
                   rel="noopener noreferrer"
@@ -340,8 +354,8 @@ const ChallengeDetail: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
           >
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-              🚩 Submit Flag
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <FlagIcon className="w-5 h-5 text-red-500" /> Submit Flag
             </h2>
             <form onSubmit={handleSubmitFlag} className="space-y-4">
               <div>
@@ -411,8 +425,8 @@ const ChallengeDetail: React.FC = () => {
               transition={{ duration: 0.3, delay: 0.2 }}
             >
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  💡 Hints
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  <LightBulbIcon className="w-5 h-5 text-yellow-500" /> Hints
                 </h2>
                 <span className="text-sm text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">
                   {currentHintLevel} / {challenge.hints.length} unlocked
@@ -420,7 +434,7 @@ const ChallengeDetail: React.FC = () => {
               </div>
 
               <p className="text-sm text-yellow-600 dark:text-yellow-400 mb-4">
-                ⚠️ Each hint reduces your final score by 15%
+                Each hint reduces your final score by 15%
               </p>
 
               {hints.length > 0 && (
@@ -451,7 +465,7 @@ const ChallengeDetail: React.FC = () => {
                            disabled:bg-gray-400 disabled:cursor-not-allowed
                            text-white rounded-lg transition-colors duration-200 font-semibold"
                 >
-                  {loadingHint ? 'Loading...' : `🔓 Unlock Hint ${currentHintLevel + 1}`}
+                  {loadingHint ? 'Loading...' : `Unlock Hint ${currentHintLevel + 1}`}
                 </button>
               )}
             </motion.div>
@@ -467,8 +481,8 @@ const ChallengeDetail: React.FC = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              📊 Statistics
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <ChartBarIcon className="w-5 h-5 text-primary-500" /> Statistics
             </h2>
             <dl className="space-y-4">
               <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
@@ -493,7 +507,7 @@ const ChallengeDetail: React.FC = () => {
                 <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <dt className="text-gray-600 dark:text-gray-400">Rating</dt>
                   <dd className="font-bold text-xl text-yellow-500">
-                    ⭐ {challenge.average_rating.toFixed(1)}
+                    <span className="flex items-center gap-1"><StarIcon className="w-4 h-4" />{challenge.average_rating.toFixed(1)}</span>
                   </dd>
                 </div>
               )}
@@ -515,8 +529,8 @@ const ChallengeDetail: React.FC = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3, delay: 0.05 }}
           >
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              🧮 Score Calculator
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <CalculatorIcon className="w-5 h-5 text-purple-500" /> Score Calculator
             </h2>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
@@ -552,8 +566,8 @@ const ChallengeDetail: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, delay: 0.1 }}
             >
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                🎯 Learning Objectives
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <AcademicCapIcon className="w-5 h-5 text-green-500" /> Learning Objectives
               </h2>
               <ul className="space-y-2">
                 {challenge.learning_objectives.map((objective, index) => (

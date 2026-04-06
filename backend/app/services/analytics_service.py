@@ -145,20 +145,22 @@ class AnalyticsService:
         recent_activity = []
         for attempt in recent_attempts:
             challenge = self.db.query(ChallengeModel).filter(ChallengeModel.id == attempt.challenge_id).first()
+            status_val = attempt.status.value if hasattr(attempt.status, 'value') else attempt.status
             recent_activity.append({
                 "challenge_title": challenge.title if challenge else "Unknown",
-                "status": attempt.status.value,
+                "status": status_val,
                 "points_earned": attempt.points_earned,
                 "timestamp": attempt.started_at.isoformat(),
                 "time_spent": attempt.time_spent
             })
 
+        skill_level_val = user.skill_level.value if hasattr(user.skill_level, 'value') else user.skill_level
         return LearningProgressResponse(
             total_challenges=total_challenges,
             solved_challenges=len(set(a.challenge_id for a in solved_attempts)),
             current_streak=user.streak_days,
             points_earned=user.total_points,
-            skill_progression={"current_level": user.skill_level.value, "progress": 75},  # Placeholder
+            skill_progression={"current_level": skill_level_val, "progress": 75},
             recent_activity=recent_activity,
             category_breakdown=category_breakdown
         )

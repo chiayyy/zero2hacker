@@ -291,19 +291,19 @@ const Home: React.FC = () => {
             <div>
               <h3 className="font-semibold mb-4">Platform</h3>
               <ul className="space-y-2 text-gray-300">
-                <li><a href="#" className="hover:text-white transition-colors">Challenges</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Learning Paths</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Leaderboard</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Analytics</a></li>
+                <li><a href="/challenges" className="hover:text-white transition-colors">Challenges</a></li>
+                <li><a href="/dashboard" className="hover:text-white transition-colors">Learning Paths</a></li>
+                <li><a href="/leaderboard" className="hover:text-white transition-colors">Leaderboard</a></li>
+                <li><a href="/analytics" className="hover:text-white transition-colors">Analytics</a></li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Support</h3>
               <ul className="space-y-2 text-gray-300">
-                <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Community</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
+                <li><a href="/dashboard" className="hover:text-white transition-colors">Documentation</a></li>
+                <li><a href="/dashboard" className="hover:text-white transition-colors">Community</a></li>
+                <li><a href="/dashboard" className="hover:text-white transition-colors">Contact</a></li>
+                <li><a href="/dashboard" className="hover:text-white transition-colors">Privacy</a></li>
               </ul>
             </div>
           </div>

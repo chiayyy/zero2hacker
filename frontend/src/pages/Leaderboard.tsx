@@ -13,7 +13,7 @@ const Leaderboard: React.FC = () => {
 
   useEffect(() => {
     fetchLeaderboard();
-  }, [timeframe]);
+  }, [timeframe]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchLeaderboard = async () => {
     try {

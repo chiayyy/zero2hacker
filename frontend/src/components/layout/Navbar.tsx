@@ -7,13 +7,14 @@ import {
   MoonIcon,
   SunIcon,
   UserCircleIcon,
-  Cog6ToothIcon,
+  KeyIcon,
   ArrowRightOnRectangleIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import ChangePasswordModal from '../ChangePasswordModal';
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -23,6 +24,7 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick }) => {
   const { user, logout } = useAuth();
   const { darkMode, toggleDarkMode } = useTheme();
   const navigate = useNavigate();
+  const [showChangePassword, setShowChangePassword] = useState(false);
   const [notifications] = useState([
     {
       id: 1,
@@ -50,6 +52,8 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick }) => {
   };
 
   return (
+    <>
+    <ChangePasswordModal isOpen={showChangePassword} onClose={() => setShowChangePassword(false)} />
     <div className="sticky top-0 z-30 bg-white dark:bg-dark-800 border-b border-gray-200 dark:border-dark-700 shadow-sm">
       <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Mobile menu button */}
@@ -64,38 +68,8 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick }) => {
           </motion.button>
         </div>
 
-        {/* Search bar (desktop) */}
-        <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-start">
-          <div className="w-full max-w-md">
-            <label htmlFor="search" className="sr-only">
-              Search challenges
-            </label>
-            <div className="relative">
-              <input
-                id="search"
-                name="search"
-                className="input w-full pl-10"
-                placeholder="Search challenges..."
-                type="search"
-              />
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3">
-                <svg
-                  className="h-4 w-4 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Spacer */}
+        <div className="hidden lg:flex lg:flex-1" />
 
         {/* Right side items */}
         <div className="flex items-center space-x-4">
@@ -215,12 +189,13 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick }) => {
                   <Menu.Item>
                     {({ active }) => (
                       <button
+                        onClick={() => setShowChangePassword(true)}
                         className={`${
                           active ? 'bg-gray-100 dark:bg-dark-700' : ''
                         } flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-300`}
                       >
-                        <Cog6ToothIcon className="mr-3 h-4 w-4" />
-                        Settings
+                        <KeyIcon className="mr-3 h-4 w-4" />
+                        Change Password
                       </button>
                     )}
                   </Menu.Item>
@@ -245,6 +220,7 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick }) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

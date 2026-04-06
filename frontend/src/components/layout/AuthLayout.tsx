@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { LockClosedIcon, ShieldCheckIcon, MagnifyingGlassIcon, CommandLineIcon } from '@heroicons/react/24/outline';
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -67,18 +68,38 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
               </motion.div>
 
               {/* Floating elements */}
-              <div className="absolute top-10 left-10 w-16 h-16 bg-white bg-opacity-10 rounded-lg backdrop-blur-sm flex items-center justify-center">
-                <span className="text-2xl">🔐</span>
-              </div>
-              <div className="absolute top-20 right-16 w-12 h-12 bg-white bg-opacity-10 rounded-lg backdrop-blur-sm flex items-center justify-center">
-                <span className="text-xl">🛡️</span>
-              </div>
-              <div className="absolute bottom-20 left-20 w-14 h-14 bg-white bg-opacity-10 rounded-lg backdrop-blur-sm flex items-center justify-center">
-                <span className="text-xl">🔍</span>
-              </div>
-              <div className="absolute bottom-32 right-12 w-10 h-10 bg-white bg-opacity-10 rounded-lg backdrop-blur-sm flex items-center justify-center">
-                <span className="text-lg">💻</span>
-              </div>
+              <motion.div
+                className="absolute top-10 left-10 w-16 h-16 bg-white bg-opacity-10 rounded-lg backdrop-blur-sm flex items-center justify-center"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 1.0 }}
+              >
+                <LockClosedIcon className="w-8 h-8 text-white" />
+              </motion.div>
+              <motion.div
+                className="absolute top-20 right-16 w-12 h-12 bg-white bg-opacity-10 rounded-lg backdrop-blur-sm flex items-center justify-center"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 1.1 }}
+              >
+                <ShieldCheckIcon className="w-6 h-6 text-white" />
+              </motion.div>
+              <motion.div
+                className="absolute bottom-20 left-20 w-14 h-14 bg-white bg-opacity-10 rounded-lg backdrop-blur-sm flex items-center justify-center"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 1.2 }}
+              >
+                <MagnifyingGlassIcon className="w-7 h-7 text-white" />
+              </motion.div>
+              <motion.div
+                className="absolute bottom-32 right-12 w-10 h-10 bg-white bg-opacity-10 rounded-lg backdrop-blur-sm flex items-center justify-center"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 1.3 }}
+              >
+                <CommandLineIcon className="w-5 h-5 text-white" />
+              </motion.div>
             </motion.div>
           </div>
         </div>

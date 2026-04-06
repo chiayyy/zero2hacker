@@ -30,7 +30,7 @@ const Dashboard: React.FC = () => {
   );
 
   // Fetch personalized recommendations
-  const { data: recommendations } = useQuery(
+  useQuery(
     'personalizedRecommendations',
     () => analyticsService.getPersonalizedRecommendations(5)
   );

@@ -39,10 +39,10 @@ app.add_middleware(
 # Include API routes
 app.include_router(api_router, prefix="/api/v1")
 
-# Mount static files for challenge resources
+# Mount static files for challenge resources at /files to avoid CRA dev proxy conflict
 static_path = Path(__file__).parent.parent / "static"
 if static_path.exists():
-    app.mount("/static", StaticFiles(directory=str(static_path)), name="static")
+    app.mount("/files", StaticFiles(directory=str(static_path)), name="static")
 
 # Security
 security = HTTPBearer()

@@ -1,0 +1,6 @@
+You intercepted an encoded message.
+
+Use your cryptography skills to recover the flag.
+
+Someone encoded a secret message using a common web encoding scheme. Decode the following payload to find the flag:
+`RkxBR3tFTkNPREVEXzFBMjYzMn0=`

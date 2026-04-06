@@ -8,7 +8,6 @@ import {
   UserAnalytics,
   LearningProgress,
   LeaderboardEntry,
-  ApiResponse
 } from '../types';
 
 // Create axios instance

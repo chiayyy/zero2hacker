@@ -1,8 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from typing import List, Optional, Dict, Any
+from datetime import datetime, timedelta, timezone
 from app.core.database import get_db
 from app.models.user import User as UserModel
+from app.models.challenge import ChallengeAttempt
 from app.schemas.analytics import UserAnalyticsResponse, SessionLogCreate, SessionLogResponse
 from app.services.analytics_service import AnalyticsService
 from app.utils.auth import get_current_user, get_current_admin_user
@@ -25,6 +28,10 @@ async def get_user_analytics(
 
     analytics_service = AnalyticsService(db)
     analytics = analytics_service.get_user_analytics(user_id)
+
+    if not analytics:
+        # Auto-create analytics record on first access
+        analytics = analytics_service.update_user_analytics(user_id)
 
     if not analytics:
         raise HTTPException(
@@ -84,6 +91,45 @@ async def get_dashboard_data(
     analytics_service = AnalyticsService(db)
     dashboard_data = analytics_service.get_dashboard_data(timeframe)
     return dashboard_data
+
+
+@router.get("/user/{user_id}/weekly-activity")
+async def get_weekly_activity(
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user)
+):
+    """Get real weekly activity (last 7 days) for a user"""
+    if current_user.id != user_id and current_user.role != "admin":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized")
+
+    days = []
+    for i in range(6, -1, -1):
+        day = datetime.now(timezone.utc) - timedelta(days=i)
+        day_start = day.replace(hour=0, minute=0, second=0, microsecond=0)
+        day_end = day_start + timedelta(days=1)
+
+        solved = db.query(func.count(ChallengeAttempt.id)).filter(
+            ChallengeAttempt.user_id == user_id,
+            ChallengeAttempt.is_correct == True,
+            ChallengeAttempt.completed_at >= day_start,
+            ChallengeAttempt.completed_at < day_end,
+        ).scalar() or 0
+
+        points = db.query(func.sum(ChallengeAttempt.points_earned)).filter(
+            ChallengeAttempt.user_id == user_id,
+            ChallengeAttempt.is_correct == True,
+            ChallengeAttempt.completed_at >= day_start,
+            ChallengeAttempt.completed_at < day_end,
+        ).scalar() or 0
+
+        days.append({
+            "day": day.strftime("%a"),
+            "challenges": solved,
+            "points": int(points),
+        })
+
+    return days
 
 
 @router.get("/performance/challenges")

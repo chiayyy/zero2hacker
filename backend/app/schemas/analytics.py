@@ -1,6 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from typing import Optional, List, Dict, Any
 from datetime import datetime
+import json
 
 
 class UserAnalyticsResponse(BaseModel):
@@ -27,6 +28,36 @@ class UserAnalyticsResponse(BaseModel):
     recommended_topics: Optional[List[str]] = None
     created_at: datetime
     updated_at: Optional[datetime] = None
+
+    @field_validator('strengths', 'weaknesses', 'favorite_categories', 'recommended_topics', mode='before')
+    @classmethod
+    def parse_json_str_list(cls, v):
+        if isinstance(v, str):
+            try:
+                return json.loads(v)
+            except Exception:
+                return None
+        return v
+
+    @field_validator('recommended_challenges', mode='before')
+    @classmethod
+    def parse_json_int_list(cls, v):
+        if isinstance(v, str):
+            try:
+                return json.loads(v)
+            except Exception:
+                return None
+        return v
+
+    @field_validator('category_performance', mode='before')
+    @classmethod
+    def parse_json_dict(cls, v):
+        if isinstance(v, str):
+            try:
+                return json.loads(v)
+            except Exception:
+                return None
+        return v
 
     class Config:
         from_attributes = True
