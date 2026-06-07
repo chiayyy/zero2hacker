@@ -74,6 +74,7 @@ class ChallengeResponse(ChallengeBase):
     ai_model_used: Optional[str] = None
     quality_score: Optional[float] = None
     files_url: Optional[str] = None
+    docker_port: Optional[int] = None
     created_at: datetime
     updated_at: Optional[datetime] = None
     published_at: Optional[datetime] = None

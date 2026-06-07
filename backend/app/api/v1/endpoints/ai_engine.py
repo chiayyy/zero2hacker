@@ -68,6 +68,46 @@ class GeneratedChallengeResponse(ChallengeResponse):
     pass
 
 
+# ---------- Map template titles to running challenge app ports + flags ----------
+# Each entry: keyword (lowercase) -> (port, flag_in_app)
+_TEMPLATE_PORT_MAP = {
+    "caesar":   (8081, "FLAG{caesar_was_here}"),
+    "base64":   (8086, "FLAG{base64_decoding_rocks}"),
+    "xor":      (8086, "FLAG{base64_decoding_rocks}"),   # reuse base64 app
+    "decoder":  (8086, "FLAG{base64_decoding_rocks}"),
+    "login":    (8080, "FLAG{sql_injection_master}"),
+    "sql":      (8080, "FLAG{sql_injection_master}"),
+    "reflected":(8085, "FLAG{xss_1s_ev3rywh3re}"),
+    "xss":      (8085, "FLAG{xss_1s_ev3rywh3re}"),
+    "hidden":   (8082, "FLAG{steganography_rocks}"),
+    "steg":     (8082, "FLAG{steganography_rocks}"),
+    "magic":    (8084, "FLAG{forensics_recovery_expert}"),
+    "file":     (8084, "FLAG{forensics_recovery_expert}"),
+    "packet":   (8083, "FLAG{wireshark_wizard}"),
+    "network":  (8083, "FLAG{wireshark_wizard}"),
+    "strings":  (8084, "FLAG{forensics_recovery_expert}"),
+    "cookie":   (8087, "FLAG{cookies_are_not_secure}"),
+}
+
+def _get_port_and_flag_for_challenge(title: str, category_key: str):
+    """Return (docker_port, flag) for a generated challenge based on title/category.
+    Only match against the part before ' — ' to avoid matching the learning goal suffix."""
+    # Use only the template name (before the em-dash suffix)
+    short_title = title.split("—")[0].split("\u2014")[0].strip().lower()
+    for keyword, (port, flag) in _TEMPLATE_PORT_MAP.items():
+        if keyword in short_title:
+            return port, flag
+    # category fallback
+    category_fallbacks = {
+        "cryptography": (8081, "FLAG{caesar_was_here}"),
+        "web":          (8085, "FLAG{xss_1s_ev3rywh3re}"),
+        "forensics":    (8082, "FLAG{steganography_rocks}"),
+        "network":      (8083, "FLAG{wireshark_wizard}"),
+        "binary":       (8084, "FLAG{forensics_recovery_expert}"),
+    }
+    return category_fallbacks.get(category_key, (8086, "FLAG{base64_decoding_rocks}"))
+
+
 # ---------- Challenge template bank (fallback when Ollama is offline) ----------
 _CHALLENGE_TEMPLATES = {
     "cryptography": [
@@ -504,6 +544,8 @@ async def generate_personalized_challenge(
     # Map to ORM model
     difficulty_enum = DifficultyEnum[difficulty.upper()] if difficulty.upper() in DifficultyEnum.__members__ else DifficultyEnum.BEGINNER
 
+    docker_port, app_flag = _get_port_and_flag_for_challenge(base_data["title"], category_key)
+
     challenge = ChallengeModel(
         title=base_data["title"],
         slug=base_data["slug"],
@@ -513,13 +555,13 @@ async def generate_personalized_challenge(
         difficulty=difficulty_enum,
         points=base_data["points"],
         estimated_time=30,
-        flag=base_data["flag"],
+        flag=app_flag,
         hints=base_data["hints"],
         solution=None,
         writeup=None,
         files_url=files_url,
         docker_image=None,
-        docker_port=None,
+        docker_port=docker_port,
         container_config=None,
         tags=base_data["tags"],
         learning_objectives=base_data["learning_objectives"],

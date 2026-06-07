@@ -3,7 +3,8 @@ from sqlalchemy.sql import func
 from sqlalchemy import and_, or_, desc
 from app.models.user import User as UserModel
 from app.models.analytics import UserAnalytics as UserAnalyticsModel, SessionLog as SessionLogModel
-from app.models.challenge import ChallengeAttempt as ChallengeAttemptModel, Challenge as ChallengeModel
+from app.models.challenge import ChallengeAttempt as ChallengeAttemptModel, Challenge as ChallengeModel, ChallengeStatus
+from app.models.category import Category as CategoryModel
 from app.schemas.analytics import SessionLogCreate, LearningProgressResponse, LeaderboardEntry
 from typing import List, Dict, Any, Optional
 from datetime import datetime, timedelta
@@ -115,27 +116,32 @@ class AnalyticsService:
         ).all()
 
         solved_attempts = [a for a in attempts if a.is_correct]
-        total_challenges = self.db.query(ChallengeModel).filter(ChallengeModel.status == "active").count()
+        total_challenges = self.db.query(ChallengeModel).filter(
+            ChallengeModel.status == ChallengeStatus.ACTIVE
+        ).count()
 
-        # Get category breakdown
+        # Build solved challenge id set
+        solved_ids = set(a.challenge_id for a in solved_attempts)
+
+        # Get ALL categories and their challenge counts
+        all_categories = self.db.query(CategoryModel).all()
         category_breakdown = {}
-        for attempt in solved_attempts:
-            challenge = self.db.query(ChallengeModel).filter(ChallengeModel.id == attempt.challenge_id).first()
-            if challenge and challenge.category:
-                category_name = challenge.category.name
-                if category_name not in category_breakdown:
-                    category_breakdown[category_name] = {"solved": 0, "total": 0}
-                category_breakdown[category_name]["solved"] += 1
-
-        # Get total challenges per category
-        for category_name in category_breakdown:
-            total_in_category = self.db.query(ChallengeModel).join(ChallengeModel.category).filter(
+        for cat in all_categories:
+            total_in_cat = self.db.query(ChallengeModel).filter(
                 and_(
-                    ChallengeModel.status == "active",
-                    ChallengeModel.category.has(name=category_name)
+                    ChallengeModel.category_id == cat.id,
+                    ChallengeModel.status == ChallengeStatus.ACTIVE
                 )
             ).count()
-            category_breakdown[category_name]["total"] = total_in_category
+            if total_in_cat == 0:
+                continue
+            solved_in_cat = self.db.query(ChallengeModel).filter(
+                and_(
+                    ChallengeModel.category_id == cat.id,
+                    ChallengeModel.id.in_(solved_ids) if solved_ids else False
+                )
+            ).count() if solved_ids else 0
+            category_breakdown[cat.name] = {"solved": solved_in_cat, "total": total_in_cat}
 
         # Recent activity (last 10 attempts)
         recent_attempts = self.db.query(ChallengeAttemptModel).filter(

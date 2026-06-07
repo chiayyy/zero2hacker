@@ -1,9 +1,11 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import Response, StreamingResponse
 import uvicorn
 import os
+import httpx
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -60,6 +62,52 @@ async def root():
 @app.get("/health")
 async def health_check():
     return {"status": "healthy", "service": "zero2hacker-backend"}
+
+
+ALLOWED_CHALLENGE_PORTS = {8080, 8081, 8082, 8083, 8084, 8085, 8086, 8087}
+
+@app.api_route("/challenge/{port}/{path:path}", methods=["GET", "POST", "PUT", "DELETE"])
+async def challenge_proxy(port: int, path: str, request: Request):
+    """Proxy requests to challenge apps so they work through the Cloudflare tunnel."""
+    if port not in ALLOWED_CHALLENGE_PORTS:
+        raise HTTPException(status_code=403, detail="Port not allowed")
+
+    target_url = f"http://127.0.0.1:{port}/{path}"
+    if request.url.query:
+        target_url += f"?{request.url.query}"
+
+    headers = dict(request.headers)
+    headers.pop("host", None)
+
+    body = await request.body()
+
+    async with httpx.AsyncClient(timeout=10) as client:
+        try:
+            resp = await client.request(
+                method=request.method,
+                url=target_url,
+                headers=headers,
+                content=body,
+                follow_redirects=False,
+            )
+        except httpx.ConnectError:
+            raise HTTPException(status_code=503, detail="Challenge app not running. Click Launch Challenge first.")
+
+    # Rewrite redirect Location headers to go through proxy
+    resp_headers = dict(resp.headers)
+    if "location" in resp_headers:
+        loc = resp_headers["location"]
+        if loc.startswith("/"):
+            resp_headers["location"] = f"/challenge/{port}{loc}"
+    resp_headers.pop("transfer-encoding", None)
+    resp_headers.pop("content-encoding", None)
+
+    return Response(
+        content=resp.content,
+        status_code=resp.status_code,
+        headers=resp_headers,
+        media_type=resp.headers.get("content-type"),
+    )
 
 
 if __name__ == "__main__":

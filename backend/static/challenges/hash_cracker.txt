@@ -1,0 +1,17 @@
+=== INTERCEPTED CREDENTIALS ===
+Target System: internal.corp.local
+Date: 2024-03-15 03:42:17 UTC
+
+User: admin
+MD5:    e99a18c428cb38d5f260853678922e03
+SHA1:   6367c48dd193d56ea7b0baad25b19455e529f5ee
+SHA256: 6ca13d52ca70c883e0f0bb101e425a89e8624de51db2d2392593af6a84118090
+
+User: backup_svc
+MD5:    0c5c6b074b571085270f2e4563f44579
+SHA1:   6bd0f3c58fc37d665ada0241927dfdd2c79e52c7
+SHA256: 3fb4bf1a989d156139a2d2dfacc57fb67e9d6813ca52558d4ddaefcdad444b35
+
+NOTE: Hashes extracted from /etc/shadow equivalent.
+Crack the admin password hash to obtain the flag.
+Flag format: FLAG{<cracked_password>}

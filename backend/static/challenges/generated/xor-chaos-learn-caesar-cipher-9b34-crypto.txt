@@ -1,0 +1,5 @@
+You intercepted an encoded message.
+
+Use your cryptography skills to recover the flag.
+
+The flag has been XOR'd with a single-byte key and hex-encoded. Recover the flag from: `252f2224183b2c313026203126373c5b56535750501e`

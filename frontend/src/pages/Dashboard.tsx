@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useQuery } from 'react-query';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   PuzzlePieceIcon,
   TrophyIcon,
@@ -15,6 +16,7 @@ import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   // Fetch user progress
   const { data: progress, isLoading: progressLoading } = useQuery(
@@ -97,11 +99,11 @@ const Dashboard: React.FC = () => {
 
         {/* Quick action buttons */}
         <div className="mt-6 flex flex-wrap gap-3">
-          <button className="btn-secondary bg-white bg-opacity-20 hover:bg-opacity-30 border-white border-opacity-30">
+          <button onClick={() => navigate('/challenges')} className="btn-secondary bg-white bg-opacity-20 hover:bg-opacity-30 border-white border-opacity-30">
             <PuzzlePieceIcon className="h-4 w-4 mr-2" />
             Browse Challenges
           </button>
-          <button className="btn-secondary bg-white bg-opacity-20 hover:bg-opacity-30 border-white border-opacity-30">
+          <button onClick={() => navigate('/analytics')} className="btn-secondary bg-white bg-opacity-20 hover:bg-opacity-30 border-white border-opacity-30">
             <ChartBarIcon className="h-4 w-4 mr-2" />
             View Analytics
           </button>
@@ -195,10 +197,10 @@ const Dashboard: React.FC = () => {
               {recommendedChallenges?.slice(0, 5).map((challenge) => (
                 <div key={challenge.id} className="border border-gray-200 dark:border-dark-600 rounded-lg p-4 hover:shadow-md transition-shadow">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-medium text-gray-900 dark:text-white truncate">
+                    <h3 className="font-medium text-gray-900 dark:text-white truncate flex-1 mr-2">
                       {challenge.title}
                     </h3>
-                    <span className={`badge difficulty-${challenge.difficulty}`}>
+                    <span className={`badge difficulty-${challenge.difficulty} shrink-0`}>
                       {challenge.difficulty}
                     </span>
                   </div>
@@ -206,12 +208,21 @@ const Dashboard: React.FC = () => {
                     {challenge.short_description}
                   </p>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                      {challenge.points} points
-                    </span>
-                    <button className="btn-primary text-xs px-3 py-1">
+                    <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
+                      <span className="font-medium text-primary-600 dark:text-primary-400">{challenge.points} pts</span>
+                      {challenge.estimated_time && (
+                        <span className="flex items-center gap-1">
+                          <ClockIcon className="h-3.5 w-3.5" />
+                          {challenge.estimated_time} min
+                        </span>
+                      )}
+                    </div>
+                    <Link
+                      to={`/challenges/${challenge.id}`}
+                      className="btn-primary text-xs px-3 py-1"
+                    >
                       Start
-                    </button>
+                    </Link>
                   </div>
                 </div>
               ))}
@@ -230,28 +241,32 @@ const Dashboard: React.FC = () => {
         <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
           Progress by Category
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {progress?.category_breakdown && Object.entries(progress.category_breakdown).map(([category, data]) => (
-            <div key={category} className="text-center">
-              <div className="mb-2">
-                <div className="text-lg font-bold text-gray-900 dark:text-white">
-                  {data.solved}/{data.total}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {progress?.category_breakdown && Object.entries(progress.category_breakdown).map(([category, data]) => {
+            const pct = data.total > 0 ? Math.round((data.solved / data.total) * 100) : 0;
+            return (
+              <div key={category} className="bg-gray-50 dark:bg-dark-700 rounded-xl p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-medium text-gray-900 dark:text-white text-sm">{category}</span>
+                  <span className="text-sm font-bold text-primary-600 dark:text-primary-400">
+                    {data.solved}/{data.total}
+                  </span>
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">
-                  {category}
+                <div className="w-full bg-gray-200 dark:bg-dark-600 rounded-full h-2 mb-1">
+                  <div
+                    className="bg-primary-600 h-2 rounded-full transition-all duration-500"
+                    style={{ width: `${pct}%` }}
+                  />
                 </div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">{pct}% complete</div>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-dark-700 rounded-full h-2">
-                <div
-                  className="bg-primary-600 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${(data.solved / data.total) * 100}%` }}
-                ></div>
-              </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                {Math.round((data.solved / data.total) * 100)}% complete
-              </div>
+            );
+          })}
+          {(!progress?.category_breakdown || Object.keys(progress.category_breakdown).length === 0) && (
+            <div className="col-span-3 text-center py-6 text-gray-500 dark:text-gray-400 text-sm">
+              Start solving challenges to see your progress!
             </div>
-          ))}
+          )}
         </div>
       </motion.div>
     </div>

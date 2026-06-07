@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from typing import List, Optional
+from pathlib import Path
 from app.core.database import get_db
 from app.models.user import User as UserModel
 from app.schemas.challenge import (
@@ -53,6 +55,36 @@ async def get_challenge(
         )
 
     return challenge
+
+
+@router.get("/{challenge_id}/download-file")
+async def download_challenge_file(
+    challenge_id: int,
+    db: Session = Depends(get_db)
+):
+    """Download the challenge resource file with proper attachment header"""
+    challenge_service = ChallengeService(db)
+    challenge = challenge_service.get_challenge_by_id(challenge_id)
+
+    if not challenge or not challenge.files_url:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No file for this challenge")
+
+    # files_url is like /files/challenges/foo.txt — strip /files/ to get relative path
+    relative = challenge.files_url.lstrip("/")
+    if relative.startswith("files/"):
+        relative = relative[len("files/"):]
+
+    base = Path(__file__).resolve().parents[4] / "static"
+    file_path = base / relative
+
+    if not file_path.exists():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"File not found on server")
+
+    return FileResponse(
+        path=str(file_path),
+        filename=file_path.name,
+        headers={"Content-Disposition": f'attachment; filename="{file_path.name}"'}
+    )
 
 
 @router.post("/", response_model=ChallengeResponse)

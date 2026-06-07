@@ -1,0 +1,5 @@
+A suspicious file was recovered from a compromised system.
+
+Your job is to analyze it and recover any hidden secrets.
+
+A PNG file contains a hidden message. Extract the flag from the image metadata or steganographic layer.

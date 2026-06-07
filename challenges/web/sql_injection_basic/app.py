@@ -49,7 +49,7 @@ def init_db():
             );
 
             INSERT INTO users (username, password, role, flag) VALUES
-            ('admin', 'super_secret_password_123', 'admin', 'flag{sql_injection_basics}'),
+            ('admin', 'super_secret_password_123', 'admin', 'FLAG{sql_injection_master}'),
             ('user', 'password123', 'user', NULL),
             ('guest', 'guest', 'guest', NULL);
         ''')

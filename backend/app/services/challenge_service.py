@@ -14,7 +14,95 @@ from typing import List, Optional, Dict, Any
 import json
 import re
 import hashlib
+import os
+import sys
+import subprocess
+import socket
 from datetime import datetime
+
+# Maps challenge slug/title keywords -> (app.py path, port)
+# __file__ = .../Zero2Hacker/backend/app/services/challenge_service.py
+# go up 3 levels (services -> app -> backend -> Zero2Hacker) then into challenges
+CHALLENGES_ROOT = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "../../../challenges")
+)
+CHALLENGE_APPS = {
+    "sql":     (os.path.join(CHALLENGES_ROOT, "web",          "sql_injection_basic", "app.py"), 8080),
+    "caesar":  (os.path.join(CHALLENGES_ROOT, "crypto",       "caesar_cipher",       "app.py"), 8081),
+    "hidden":  (os.path.join(CHALLENGES_ROOT, "steganography","hidden_message",       "app.py"), 8082),
+    "packet":  (os.path.join(CHALLENGES_ROOT, "network",      "packet_analysis",     "app.py"), 8083),
+    "deleted": (os.path.join(CHALLENGES_ROOT, "forensics",    "deleted_files",       "app.py"), 8084),
+    "xss":     (os.path.join(CHALLENGES_ROOT, "web",          "basic_xss",           "app.py"), 8085),
+    "base64":  (os.path.join(CHALLENGES_ROOT, "crypto",       "base64_bonanza",      "app.py"), 8086),
+    "cookie":  (os.path.join(CHALLENGES_ROOT, "web",          "cookie_monster",      "app.py"), 8087),
+}
+
+# Running processes: port -> subprocess.Popen
+_running: Dict[int, subprocess.Popen] = {}
+
+
+def _is_port_open(port: int) -> bool:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(1)
+        return s.connect_ex(("127.0.0.1", port)) == 0
+
+
+def _find_app_for_challenge(challenge: ChallengeModel):
+    title = (challenge.title or "").lower()
+    slug = (challenge.slug or "").lower()
+    combined = title + " " + slug
+    for keyword, (app_path, port) in CHALLENGE_APPS.items():
+        if keyword in combined:
+            return app_path, port
+    # fallback: use docker_port if set
+    if challenge.docker_port:
+        return None, challenge.docker_port
+    return None, None
+
+
+def _find_python() -> str:
+    """Return a Python executable that has Flask installed."""
+    import shutil
+    for candidate in [sys.executable, "python", "python3",
+                      r"C:\Users\Student CL333\AppData\Local\Programs\Python\Python311\python.exe"]:
+        try:
+            result = subprocess.run(
+                [candidate, "-c", "import flask"],
+                capture_output=True, timeout=5
+            )
+            if result.returncode == 0:
+                return candidate
+        except Exception:
+            continue
+    return sys.executable  # fallback
+
+
+def _start_app(app_path: str, port: int) -> bool:
+    if _is_port_open(port):
+        return True  # already running
+    if port in _running:
+        proc = _running[port]
+        if proc.poll() is None:
+            return True  # still alive
+    try:
+        python = _find_python()
+        proc = subprocess.Popen(
+            [python, app_path],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            cwd=os.path.dirname(app_path),
+        )
+        _running[port] = proc
+        # Wait up to 3s for port to open
+        import time
+        for _ in range(15):
+            if _is_port_open(port):
+                return True
+            time.sleep(0.2)
+        return _is_port_open(port)
+    except Exception as e:
+        print(f"Failed to start challenge app {app_path}: {e}")
+        return False
 
 
 class ChallengeService:
@@ -342,17 +430,26 @@ class ChallengeService:
         return None
 
     def start_challenge_container(self, user_id: int, challenge_id: int) -> Optional[Dict[str, Any]]:
-        """Start challenge container (placeholder for Docker integration)"""
+        """Start the challenge app process and return its URL"""
         challenge = self.get_challenge_by_id(challenge_id)
-        if not challenge or not challenge.docker_image:
+        if not challenge:
             return None
 
-        # This would integrate with Docker to start a container
-        # For now, return placeholder data
+        app_path, port = _find_app_for_challenge(challenge)
+        if not port:
+            return None
+
+        started = False
+        if app_path and os.path.exists(app_path):
+            started = _start_app(app_path, port)
+        else:
+            started = _is_port_open(port)
+
         return {
             "container_id": f"ctf_{challenge_id}_{user_id}",
-            "port": challenge.docker_port or 8080,
-            "url": f"http://localhost:{challenge.docker_port or 8080}"
+            "port": port,
+            "url": f"/challenge/{port}/",
+            "running": started,
         }
 
     def get_recommended_challenges(self, user_id: int, limit: int = 10) -> List[ChallengeModel]:

@@ -1,0 +1,11 @@
+TOP SECRET TRANSMISSION
+Decryption key: 0x42
+Payload: {encoded_below}
+
+Mission briefing:
+Agent, the following data has been encrypted using a simple XOR cipher.
+Apply the key to each byte to reveal the secret.
+
+--- BEGIN ENCODED DATA ---
+04 0E 03 05 39 3A 2D 30 1D 2B 31 1D 3B 2D 37 30 1D 24 30 2B 27 2C 26 3F
+--- END ENCODED DATA ---
